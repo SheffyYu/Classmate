@@ -14,7 +14,8 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity implements OnClickListener
         ,HomeFragment.OnFragmentInteractionListener
         ,MyFragment.OnFragmentInteractionListener
-        ,NotesFragment.OnFragmentInteractionListener{
+        ,NotesFragment.OnFragmentInteractionListener
+        ,BookFragment.OnFragmentInteractionListener{
     private TextView btn_home;
     private TextView btn_notes;
     private TextView btn_search;

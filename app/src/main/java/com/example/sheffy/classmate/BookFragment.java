@@ -3,10 +3,7 @@ package com.example.sheffy.classmate;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,42 +12,23 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link HomeFragment.OnFragmentInteractionListener} interface
+ * {@link BookFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class HomeFragment extends Fragment implements BookFragment.OnFragmentInteractionListener
-                                                    ,View.OnClickListener{
+public class BookFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    private BookFragment bookFragment;
 
-    public HomeFragment() {
+    public BookFragment() {
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        FragmentManager fragmentManager=getChildFragmentManager();
-        FragmentTransaction fgTransaction=fragmentManager.beginTransaction();
-        if(bookFragment == null){
-            bookFragment = new BookFragment();        //如果首页碎片不存在则新建一个
-            fgTransaction.replace(R.id.bookFlContainer,bookFragment);
-        }
-        else{
-            fgTransaction.show(bookFragment);
-        }
-        fgTransaction.commit();
-        return view;
+        return inflater.inflate(R.layout.fragment_book, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -90,12 +68,5 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    public void onClick(View v) {
-
     }
 }
