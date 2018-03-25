@@ -33,7 +33,9 @@
             android:drawableTop="@drawable/tab_navigation_home"
             android:text="@string/home"
             android:textSize="12sp"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="2dp"/>
 
         <!--搜索-->
         <TextView
@@ -45,7 +47,9 @@
             android:drawableTop="@drawable/tab_navigation_search"
             android:text="@string/search"
             android:textSize="12sp"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="2dp"/>
 
         <!--添加-->
         <TextView
@@ -54,7 +58,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:drawableTop="@mipmap/add"
-            />
+            android:gravity="center"
+            android:layout_marginTop="3dp"/>
 
         <!--点滴-->
         <TextView
@@ -66,7 +71,9 @@
             android:drawableTop="@drawable/tab_navigation_notes"
             android:text="@string/notes"
             android:textSize="12sp"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="2dp"/>
 
         <!--我的-->
         <TextView
@@ -78,7 +85,9 @@
             android:drawableTop="@drawable/tab_navigation_my"
             android:text="@string/my"
             android:textSize="12sp"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="2dp"/>
 
     </LinearLayout>
 

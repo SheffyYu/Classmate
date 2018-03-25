@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     private HomeFragment homeFg;
     private MyFragment myFg;
     private NotesFragment notesFg;
-    private FragmentManager fragmentManager;
+//    private FragmentManager fragmentManager;
+//    private FragmentTransaction fgTransaction;
 
 
     @Override
@@ -37,7 +38,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         setContentView(R.layout.activity_main);
 
         initView();
-//        initData();
+        //默认启动时现实首页
+        initData();
+
     }
 
 //    初始化事件绑定
@@ -54,14 +57,26 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         btn_my.setOnClickListener(this);
         btn_notes.setOnClickListener(this);
         btn_add.setOnClickListener(this);
+
+
     }
 
 
-    //初始化数据
+    //初始化数据，默认显示首页
     public void initData(){
-        homeFg = new HomeFragment();
-        notesFg = new NotesFragment();
-        myFg = new MyFragment();
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fgTransaction=fragmentManager.beginTransaction();
+
+        btn_home.setSelected(true);
+        if(homeFg == null){
+            homeFg = new HomeFragment();        //如果首页碎片不存在则新建一个
+            fgTransaction.add(R.id.flContainer,homeFg);
+        }
+        else{
+            fgTransaction.show(homeFg);
+        }
+        fgTransaction.commit();
+
     }
 
 
@@ -88,7 +103,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
 
     public void onClick(View v){
-        FragmentTransaction fgTransaction=getSupportFragmentManager().beginTransaction();
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fgTransaction=fragmentManager.beginTransaction();
         hideAllFragment(fgTransaction);
 
         switch (v.getId()){
@@ -99,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 if(homeFg == null){
                     homeFg = new HomeFragment();        //如果首页碎片不存在则新建一个
                     fgTransaction.add(R.id.flContainer,homeFg);
-                    fgTransaction.show(homeFg);
                 }
                 else{
                     fgTransaction.show(homeFg);
@@ -121,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 if(notesFg == null){
                     notesFg = new NotesFragment();        //如果点滴记录碎片不存在则新建一个
                     fgTransaction.add(R.id.flContainer,notesFg);
-                    fgTransaction.show(notesFg);
                 }
                 else{
                     fgTransaction.show(notesFg);
@@ -134,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 if(myFg == null){
                     myFg = new MyFragment();        //如果我的碎片不存在则新建一个
                     fgTransaction.add(R.id.flContainer,myFg);
-                    fgTransaction.show(myFg);
                 }
                 else{
                     fgTransaction.show(myFg);
