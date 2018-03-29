@@ -17,7 +17,7 @@ public class SplashMain extends AppCompatActivity {
         setContentView(R.layout.activity_splash_main);
 
         //引导页定时跳转时间设置为2s
-        final Intent it = new Intent(this, MainActivity.class); //转向首页
+        final Intent it = new Intent(this,LoginActivity.class); //转向首页
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override

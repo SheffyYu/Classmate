@@ -9,4 +9,7 @@
     <color name="colorYellow">#FFD374</color>
     <color name="colorBule">#E1E5E8</color>
     <color name="colorGray">#9DA0A1</color>
+    <color name="hint">#D0D0D0</color>
+    <color name="btn_color">#1E90FF</color>
+    <color name="colorRed">#E80000</color>
 </resources>

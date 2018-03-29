@@ -1,10 +1,12 @@
 package com.example.sheffy.classmate;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -28,9 +30,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     private HomeFragment homeFg;
     private MyFragment myFg;
     private NotesFragment notesFg;
-//    private FragmentManager fragmentManager;
-//    private FragmentTransaction fgTransaction;
 
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +43,16 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);         //去标题
         setContentView(R.layout.activity_main);
 
+        Intent intent=getIntent();
+        userName=intent.getStringExtra("data_user_name");
+
+        Log.i("userName", "onCreate: "+userName);
+
         initView();
         //默认启动时现实首页
         initData();
-
     }
+
 
 //    初始化事件绑定
     private void initView(){
@@ -58,8 +68,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         btn_my.setOnClickListener(this);
         btn_notes.setOnClickListener(this);
         btn_add.setOnClickListener(this);
-
-
     }
 
 
@@ -67,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     public void initData(){
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fgTransaction=fragmentManager.beginTransaction();
+
 
         btn_home.setSelected(true);
         if(homeFg == null){
@@ -104,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
 
     public void onClick(View v){
+
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fgTransaction=fragmentManager.beginTransaction();
         hideAllFragment(fgTransaction);
@@ -116,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 if(homeFg == null){
                     homeFg = new HomeFragment();        //如果首页碎片不存在则新建一个
                     fgTransaction.add(R.id.flContainer,homeFg);
+
                 }
                 else{
                     fgTransaction.show(homeFg);
@@ -158,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 break;
         }
         fgTransaction.commit();
-
 
     }
 
