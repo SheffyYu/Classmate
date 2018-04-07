@@ -9,6 +9,10 @@
     <string name="password">密码</string>
     <string name="regist">注册</string>
     <string name="passwordAgain">再次输入密码</string>
+    <string name="myClassmate">我的同学录</string>
+    <string name="gong">共</string>
+    <string name="x">x</string>
+    <string name="pian">篇</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

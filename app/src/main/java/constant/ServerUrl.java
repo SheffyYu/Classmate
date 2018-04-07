@@ -6,7 +6,7 @@ package constant;
 
 public class ServerUrl {
     //服务器IP地址
-    public static String IP = "192.168.1.106";
+    public static String IP = "192.168.1.104";
 //    public static String IP = "58.19.2.210";
 
 //    public static String IP = "192.168.43.73";
