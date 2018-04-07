@@ -17,4 +17,7 @@ public class ServerUrl {
 
     //注册用户，添加用户
     public static String PUT_USER = SERVER_PATH + "/userController/createUser.action";
+
+    //获取同学录列表
+    public static String GET_BOOK_BY_USERID=SERVER_PATH+"/bookController/getAllBookByUserId.action?userId=";
 }

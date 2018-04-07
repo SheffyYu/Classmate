@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:orientation="vertical">
 
             <circleimageview.CircleImageView
@@ -41,28 +41,40 @@
                 android:layout_marginTop="7dp"/>
         </LinearLayout>
 
-        <!--同学录图像-->
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_weight="4"-->
-            <!--android:orientation="vertical"-->
-            <!--android:background="@drawable/book_bg"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:layout_marginBottom="30dp"-->
-            <!--android:layout_marginLeft="35dp"-->
-            <!--android:layout_marginRight="35dp" >-->
-        <!--</LinearLayout>-->
-        <FrameLayout
-            android:id="@+id/bookFlContainer"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4">
 
-        </FrameLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="10">
+        </android.support.v4.view.ViewPager>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_anim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp">
+
+            <LinearLayout
+
+                android:id="@+id/ll_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_red_piont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/shape_point_red" />
+        </RelativeLayout>
+
 
     </LinearLayout>
-
 
 
 </FrameLayout>

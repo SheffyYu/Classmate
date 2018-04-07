@@ -10,7 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import bean.BookBean;
 import bean.UserBean;
+import http.BookHttpUtils;
 import http.HttpCallback;
 import http.UserHttpUtils;
 
@@ -25,8 +30,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String passwordEdt;
 
     private UserHttpCallback userCallback;
-
+    private BookHttpCallback bookCallback;
+    private List<BookBean> bookList = new ArrayList<BookBean>();
     private UserBean userBean;
+    private int bookListSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,12 +95,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //String 类型不能用 ==
                     else if(passwordEdt.equals(userBean.getPassword())){
                         Log.i("userBean", userBean.toString());
-                        //跳转到首页
-                        String userName=userBean.getUserId();
-                        Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                        intent.putExtra("data_user_name",userName);
-                        startActivity(intent);
-                        finish();   //结束登录页，首页点返回无法再跳转到登录页，直接退出app
+                        //加载网络
+                        bookCallback=new BookHttpCallback();
+                        //加载同学录列表
+                        new BookHttpUtils().getAllBookByUserId(userBean.getUserId(),bookCallback);
                     }
                     else {
                         Toast.makeText(LoginActivity.this,"密码错误",Toast.LENGTH_SHORT).show();
@@ -109,4 +114,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+
+    class BookHttpCallback implements HttpCallback {
+        @Override
+        public void onSuccess(Object data){
+            //获取同学录列表
+            bookList=(List<BookBean>)data;
+            Log.i("bookList", bookList.toString());
+            bookListSize=bookList.size();
+            Log.i("bookListSize", bookListSize+"");
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //跳转到首页
+                    ArrayList<BookBean> arrayList=new ArrayList<BookBean>();
+                    arrayList=(ArrayList<BookBean>) bookList;
+                    String userName=userBean.getUserId();
+                    Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                    intent.putExtra("data_user_name",userName);
+                    intent.putExtra("data_bookListSize",bookListSize);
+                    intent.putExtra("data_bookList",arrayList);
+                    startActivity(intent);
+                    finish();   //结束登录页，首页点返回无法再跳转到登录页，直接退出app
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(String message){
+            Log.i("bookBean", "网络加载错误");
+        }
+
+    }
 }

@@ -13,16 +13,17 @@ import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import bean.BookBean;
+
 public class MainActivity extends AppCompatActivity implements OnClickListener
         ,HomeFragment.OnFragmentInteractionListener
         ,MyFragment.OnFragmentInteractionListener
         ,NotesFragment.OnFragmentInteractionListener
         ,BookFragment.OnFragmentInteractionListener{
-    private TextView btn_home;
-    private TextView btn_notes;
-    private TextView btn_search;
-    private TextView btn_my;
-    private TextView btn_add;
+    private TextView btn_home,btn_add,btn_my,btn_search,btn_notes;
 
     //这里没有搜索的碎片
     // 搜索的页面不需要显示底部导航栏
@@ -31,7 +32,25 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     private MyFragment myFg;
     private NotesFragment notesFg;
 
+    private int bookListSize;
     private String userName;
+    private List<BookBean> bookList = new ArrayList<BookBean>();
+
+    public int getBookListSize() {
+        return bookListSize;
+    }
+
+    public void setBookListSize(int bookListSize) {
+        this.bookListSize = bookListSize;
+    }
+
+    public List<BookBean> getBookList() {
+        return bookList;
+    }
+
+    public void setBookList(List<BookBean> bookList) {
+        this.bookList = bookList;
+    }
 
     public String getUserName() {
         return userName;
@@ -45,12 +64,17 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
         Intent intent=getIntent();
         userName=intent.getStringExtra("data_user_name");
+        //*****************************************************************
+        //如果数据无法传输,则取默认值1
+        bookListSize=intent.getIntExtra("data_bookListSize",1);
+        bookList=(ArrayList<BookBean>)intent.getSerializableExtra("data_bookList");
 
         Log.i("userName", "onCreate: "+userName);
 
         initView();
         //默认启动时现实首页
         initData();
+
     }
 
 
@@ -177,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 
 
 

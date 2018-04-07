@@ -7,26 +7,28 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.List;
 
-import bean.UserBean;
+import bean.BookBean;
 import constant.ServerUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Created by Sheffy on 2018/3/27.
+ * Created by Sheffy on 2018/4/7.
  */
 
-public class UserHttpUtils {
+public class BookHttpUtils {
     // 做网络请求使用的对象
     private static final OkHttpClient client = new OkHttpClient();
 
-    //获取用户对象
-    public void getUserByUserId(String userId,final HttpCallback callback){
-        Type t = new TypeToken<UserBean>(){}.getType();
-        getData(ServerUrl.GET_USER_BY_USERID + userId,callback,t);
+    //获取同学录列表
+    public void getAllBookByUserId(String userId,final HttpCallback callback){
+        Type t = new TypeToken<List<BookBean>>(){}.getType();
+        getData(ServerUrl.GET_BOOK_BY_USERID + userId,callback,t);
     }
+
 
     public void getData(String url,final HttpCallback callback,final Type type){
         // 创建请求对象
