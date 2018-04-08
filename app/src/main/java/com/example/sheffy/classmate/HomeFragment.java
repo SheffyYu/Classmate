@@ -84,17 +84,6 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
 
         initData();
 
-        //添加一个同学录碎片
-//        FragmentManager fragmentManager=getChildFragmentManager();
-//        FragmentTransaction fgTransaction=fragmentManager.beginTransaction();
-//        if(bookFragment == null){
-//            bookFragment = new BookFragment();
-//            fgTransaction.replace(R.id.bookFlContainer,bookFragment);
-//        }
-//        else{
-//            fgTransaction.show(bookFragment);
-//        }
-//        fgTransaction.commit();
         return view;
     }
 

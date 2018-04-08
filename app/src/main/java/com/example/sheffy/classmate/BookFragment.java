@@ -1,14 +1,18 @@
 package com.example.sheffy.classmate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import bean.BookBean;
 
@@ -19,12 +23,14 @@ import bean.BookBean;
  * {@link BookFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class BookFragment extends Fragment {
+public class BookFragment extends Fragment{
 
     private OnFragmentInteractionListener mListener;
     private TextView txv_book_name,txv_classmate_number,txv_delete_book,txv_setup_book;
     private LinearLayout ll_book;
     private View view;
+
+    private String bookName,strCount;
 
     public BookFragment() {
         // Required empty public constructor
@@ -49,8 +55,8 @@ public class BookFragment extends Fragment {
         view=inflater.inflate(R.layout.fragment_book, container, false);
 
         int classmateCount=getArguments().getInt("classmateCount", 0);
-        String bookName=getArguments().getString("bookName","我的同学录");
-        String strCount=classmateCount+"";
+        bookName=getArguments().getString("bookName","我的同学录");
+        strCount=classmateCount+"";
 
         //初始化组件
         initView();
@@ -61,6 +67,39 @@ public class BookFragment extends Fragment {
         return view;
     }
 
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        ll_book.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //跳转到目录
+                Intent intent=new Intent(getActivity(),CatalogActivity.class);
+                intent.putExtra("data_book_name",bookName);
+                startActivity(intent);
+                Log.i("onClick:", "跳转成功");
+            }
+        });
+
+        //删除
+        txv_delete_book.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        //设置
+        txv_setup_book.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     //初始化组件
     public void initView(){
         txv_book_name=(TextView)view.findViewById(R.id.txv_book_name);
@@ -69,6 +108,7 @@ public class BookFragment extends Fragment {
         txv_setup_book=(TextView)view.findViewById(R.id.txv_setup_book);
         ll_book=(LinearLayout)view.findViewById(R.id.ll_book);
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
