@@ -158,7 +158,9 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
         //存Frangment的list
         fragmentList = new ArrayList<Fragment>();
         for(int i=0;i<bookListSize;i++){
-            BookFragment bookFragment= new BookFragment();
+            //创建一个book碎片并向其传值
+            BookFragment bookFragment= BookFragment.newInstance(bookList.get(i));
+            Log.i("initdata:", bookList.get(i).toString());
             Log.i("initdata:", bookFragment.toString());
             fragmentList.add(bookFragment);
         }
@@ -168,6 +170,8 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
         initPointData();
         //viewpager 滑动时候圆点的动画
         initViewPager();
+
+
     }
 
     //初始化小圆点

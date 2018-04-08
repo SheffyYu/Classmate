@@ -7,6 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import bean.BookBean;
 
 
 /**
@@ -18,9 +22,23 @@ import android.view.ViewGroup;
 public class BookFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private TextView txv_book_name,txv_classmate_number,txv_delete_book,txv_setup_book;
+    private LinearLayout ll_book;
+    private View view;
 
     public BookFragment() {
         // Required empty public constructor
+    }
+
+    public static BookFragment newInstance(BookBean bookBean){
+        BookFragment bookFragment = new BookFragment();
+
+        Bundle args = new Bundle();
+        args.putString("bookName",bookBean.getBookId());
+        args.putInt("classmateCount", bookBean.getClassmateCount());
+        bookFragment.setArguments(args);
+
+        return bookFragment;
     }
 
 
@@ -28,7 +46,28 @@ public class BookFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_book, container, false);
+        view=inflater.inflate(R.layout.fragment_book, container, false);
+
+        int classmateCount=getArguments().getInt("classmateCount", 0);
+        String bookName=getArguments().getString("bookName","我的同学录");
+        String strCount=classmateCount+"";
+
+        //初始化组件
+        initView();
+
+        txv_classmate_number.setText(strCount);
+        txv_book_name.setText(bookName);
+
+        return view;
+    }
+
+    //初始化组件
+    public void initView(){
+        txv_book_name=(TextView)view.findViewById(R.id.txv_book_name);
+        txv_classmate_number=(TextView)view.findViewById(R.id.txv_classmate_number);
+        txv_delete_book=(TextView)view.findViewById(R.id.txv_delete_book);
+        txv_setup_book=(TextView)view.findViewById(R.id.txv_setup_book);
+        ll_book=(LinearLayout)view.findViewById(R.id.ll_book);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

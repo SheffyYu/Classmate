@@ -10,6 +10,15 @@ public class BookBean implements Serializable{
 
     public String BookId;
     public String UserId;
+    public int ClassmateCount;
+
+    public int getClassmateCount() {
+        return ClassmateCount;
+    }
+
+    public void setClassmateCount(int classmateCount) {
+        ClassmateCount = classmateCount;
+    }
 
     public String getBookId() {
         return BookId;
@@ -32,6 +41,7 @@ public class BookBean implements Serializable{
         return "BookBean[" +
                 "BookId=" + BookId +
                 ", UserId=" + UserId +
+                ",ClassmateCount="+ClassmateCount+
                 "]";
     }
 }
