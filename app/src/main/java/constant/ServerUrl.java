@@ -6,7 +6,7 @@ package constant;
 
 public class ServerUrl {
     //服务器IP地址
-    public static String IP = "192.168.1.104";
+    public static String IP = "192.168.1.103";
 //    public static String IP = "58.19.2.210";
 
 //    public static String IP = "192.168.43.73";
@@ -20,4 +20,7 @@ public class ServerUrl {
 
     //获取同学录列表
     public static String GET_BOOK_BY_USERID=SERVER_PATH+"/bookController/getAllBookByUserId.action?userId=";
+
+    //获取目录
+    public static String GET_CATALOG_BY_BOOKID=SERVER_PATH+"/classmateController/getItemListByBookId.action?bookId=";
 }
