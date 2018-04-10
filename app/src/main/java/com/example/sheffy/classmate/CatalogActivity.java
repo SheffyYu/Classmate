@@ -18,11 +18,12 @@ import java.util.List;
 
 import adapter.CatalogAdapter;
 import bean.ClassmateBean;
+import http.ClassmateHttpUtills;
+import http.HttpCallback;
 
 public class CatalogActivity extends AppCompatActivity {
 
     private String bookName;
-    private List<ClassmateBean> catalogList;
 
     private RecyclerView rv_list_name;
     private FloatingActionButton fab_add_item;
@@ -30,6 +31,8 @@ public class CatalogActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private TextView txv_title;
     private Toolbar toolbar;
+    private ClassmateListHttpCallback catalogCallBack;
+    private List<ClassmateBean> catalogList=new ArrayList<ClassmateBean>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,30 +44,18 @@ public class CatalogActivity extends AppCompatActivity {
 
         Intent intent=getIntent();
         bookName=intent.getStringExtra("data_book_name");
-        catalogList=(ArrayList<ClassmateBean>)intent.getSerializableExtra("data_catalogList");
-
-        //初始化数据
-        initView();
-
-        //设置标题
-        txv_title.setText(bookName);
-        Log.i("bookName:", bookName);
-        setSupportActionBar(toolbar);
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null){
-            actionBar.setDisplayShowTitleEnabled(false);
+        if(bookName==null){
+            bookName=intent.getStringExtra("add_bookName");
+                Log.i("bookName:", bookName);
         }
 
+        //加载网络
+        catalogCallBack=new ClassmateListHttpCallback();
+        Log.i("onClick", "成功创建callback对象");
+        //获取目录列表
+        new ClassmateHttpUtills().getClassmateListByBookId(bookName,catalogCallBack);
+        Log.i("onClick", "接收不到数据");
 
-        fab_add_item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //此处跳转到添加页面
-                Intent intent=new Intent(CatalogActivity.this,AddItemActivity.class);
-                intent.putExtra("bookName",bookName);
-                startActivity(intent);
-            }
-        });
     }
 
     //初始化/绑定事件
@@ -80,5 +71,49 @@ public class CatalogActivity extends AppCompatActivity {
         //添加分割线
         rv_list_name.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         rv_list_name.setAdapter(catalogAdapter);
+    }
+
+    class ClassmateListHttpCallback implements HttpCallback {
+        @Override
+        public void onSuccess(Object data){
+            //获取同学录列表
+            catalogList=(List<ClassmateBean>)data;
+            Log.i("catalogList",catalogList.toString());
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //初始化数据
+                    initView();
+
+                    //设置标题
+                    txv_title.setText(bookName);
+                    Log.i("bookName:", bookName);
+                    setSupportActionBar(toolbar);
+                    android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+                    if (actionBar != null){
+                        actionBar.setDisplayShowTitleEnabled(false);
+                    }
+
+
+                    fab_add_item.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //此处跳转到添加页面
+                            Intent intent=new Intent(CatalogActivity.this,AddItemActivity.class);
+                            intent.putExtra("bookName",bookName);
+                            startActivity(intent);
+                        }
+                    });
+
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(String message){
+            Log.i("catalogList", "网络加载错误");
+        }
+
     }
 }

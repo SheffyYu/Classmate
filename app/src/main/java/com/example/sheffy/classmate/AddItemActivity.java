@@ -167,7 +167,7 @@ public class AddItemActivity extends AppCompatActivity {
         //转换成 Json 文本
         Gson gson = new Gson();
         String json =  gson.toJson(classmateBean);
-        Log.i("json", "putUser: "+json);
+        Log.i("json", "putClassmate: "+json);
 
         // 提交 json 文本到服务器
         new HttpUtils().postData(ServerUrl.PUT_CLASSMATE,json,new HttpCallback(){
@@ -179,6 +179,7 @@ public class AddItemActivity extends AppCompatActivity {
                         Toast.makeText(AddItemActivity.this,"添加成功",Toast.LENGTH_SHORT).show();
                         //跳转到目录
                         Intent intent=new Intent(AddItemActivity.this,CatalogActivity.class);
+                        intent.putExtra("add_bookName",bookName);
                         startActivity(intent);
                         finish();   //结束添加页
                     }
