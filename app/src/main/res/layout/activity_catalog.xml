@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorGreen"
-        app:theme="@style/AppTheme.NoActionBar"
-        app:title="">
+        app:theme="@style/AppTheme">
 
         <TextView
             android:layout_width="wrap_content"
@@ -21,7 +20,6 @@
             android:id="@+id/txv_title"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:text="@string/myClassmate"
             android:textColor="@color/white"
             android:textSize="19sp"/>
 

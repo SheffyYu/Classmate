@@ -23,4 +23,7 @@ public class ServerUrl {
 
     //获取目录
     public static String GET_CATALOG_BY_BOOKID=SERVER_PATH+"/classmateController/getItemListByBookId.action?bookId=";
+
+    //添加同学
+    public static String PUT_CLASSMATE=SERVER_PATH+"";
 }

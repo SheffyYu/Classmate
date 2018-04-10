@@ -30,7 +30,11 @@
         <activity android:name=".NavigationBar" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegistActivity" />
-        <activity android:name=".CatalogActivity"></activity>
+        <activity
+            android:name=".CatalogActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".AddItemActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
     </application>
 
 </manifest>
