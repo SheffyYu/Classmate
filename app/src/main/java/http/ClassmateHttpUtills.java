@@ -23,7 +23,7 @@ public class ClassmateHttpUtills {
     // 做网络请求使用的对象
     private static final OkHttpClient client = new OkHttpClient();
 
-    //获取用户对象
+    //获取同学列表对象
     public void getClassmateListByBookId(String bookId,final HttpCallback callback){
         Type t = new TypeToken<List<ClassmateBean>>(){}.getType();
         getData(ServerUrl.GET_CATALOG_BY_BOOKID + bookId,callback,t);

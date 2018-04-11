@@ -1,6 +1,9 @@
 package adapter;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sheffy.classmate.R;
+import com.example.sheffy.classmate.ShowClassmateActivity;
 
 import java.util.List;
 
@@ -56,7 +60,13 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.ViewHold
                 Toast.makeText(v.getContext(),clb.getClassmateName(),Toast.LENGTH_SHORT).show();
                 myApplication=(MyApplication)v.getContext().getApplicationContext();
                 myApplication.setClassmateBean(clb);
+                Log.i("myApplication:", clb.toString());
 
+                Intent intent=new Intent(v.getContext(), ShowClassmateActivity.class);
+                v.getContext().startActivity(intent);
+                // 转化为activity，然后finish就行了
+                Activity activity = (Activity)v.getContext();
+                activity.finish();
             }
         });
         return holder;

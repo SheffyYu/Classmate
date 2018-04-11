@@ -16,7 +16,16 @@ public class MyApplication extends Application {
     private String booknName;
     private List<BookBean> bookBeanList;
     private int bookListSize;
+    private int classmateCount;
     private ClassmateBean classmateBean;
+
+    public int getClassmateCount() {
+        return classmateCount;
+    }
+
+    public void setClassmateCount(int classmateCount) {
+        this.classmateCount = classmateCount;
+    }
 
     public int getBookListSize() {
         return bookListSize;

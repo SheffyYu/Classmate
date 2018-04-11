@@ -100,6 +100,7 @@ public class CatalogActivity extends AppCompatActivity {
                             Intent intent=new Intent(CatalogActivity.this,AddItemActivity.class);
                             intent.putExtra("bookName",bookName);
                             startActivity(intent);
+                            finish();
                         }
                     });
 

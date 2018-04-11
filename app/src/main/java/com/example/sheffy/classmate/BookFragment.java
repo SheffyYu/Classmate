@@ -39,6 +39,7 @@ public class BookFragment extends Fragment{
 
     private List<ClassmateBean> catalogList=new ArrayList<ClassmateBean>();
     private MyApplication myApp;
+    private int classmateCount;
 
     public BookFragment() {
         // Required empty public constructor
@@ -62,7 +63,7 @@ public class BookFragment extends Fragment{
         // Inflate the layout for this fragment
         view=inflater.inflate(R.layout.fragment_book, container, false);
 
-        int classmateCount=getArguments().getInt("classmateCount", 0);
+        classmateCount=getArguments().getInt("classmateCount", 0);
         bookName=getArguments().getString("bookName","我的同学录");
         strCount=classmateCount+"";
 
