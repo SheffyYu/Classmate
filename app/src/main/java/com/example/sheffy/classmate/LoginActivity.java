@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.MyApplication;
 import bean.BookBean;
 import bean.UserBean;
 import http.BookHttpUtils;
@@ -34,6 +35,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private List<BookBean> bookList = new ArrayList<BookBean>();
     private UserBean userBean;
     private int bookListSize;
+    private MyApplication myApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,13 +130,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void run() {
                     //跳转到首页
-                    ArrayList<BookBean> arrayList=new ArrayList<BookBean>();
-                    arrayList=(ArrayList<BookBean>) bookList;
-                    String userName=userBean.getUserId();
+//                    ArrayList<BookBean> arrayList=new ArrayList<BookBean>();
+//                    arrayList=(ArrayList<BookBean>) bookList;
+//                    String userName=userBean.getUserId();
+                    myApp=(MyApplication)getApplication();
+                    myApp.setUserName(userBean.getUserId());
+                    myApp.setBookBeanList(bookList);
+                    myApp.setBookListSize(bookListSize);
+
                     Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                    intent.putExtra("data_user_name",userName);
-                    intent.putExtra("data_bookListSize",bookListSize);
-                    intent.putExtra("data_bookList",arrayList);
+//                    intent.putExtra("data_user_name",userName);
+//                    intent.putExtra("data_bookListSize",bookListSize);
+//                    intent.putExtra("data_bookList",arrayList);
                     startActivity(intent);
                     finish();   //结束登录页，首页点返回无法再跳转到登录页，直接退出app
                 }

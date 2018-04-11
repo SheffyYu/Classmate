@@ -12,6 +12,7 @@ import com.example.sheffy.classmate.R;
 
 import java.util.List;
 
+import application.MyApplication;
 import bean.ClassmateBean;
 
 /**
@@ -20,6 +21,7 @@ import bean.ClassmateBean;
 
 public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.ViewHolder> {
     private List<ClassmateBean> mCatalogList;
+    private MyApplication myApplication;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         View catalogView;
@@ -52,6 +54,8 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.ViewHold
                 ClassmateBean clb=mCatalogList.get(position);
                 //此处跳转到个人单页****************************************************************
                 Toast.makeText(v.getContext(),clb.getClassmateName(),Toast.LENGTH_SHORT).show();
+                myApplication=(MyApplication)v.getContext().getApplicationContext();
+                myApplication.setClassmateBean(clb);
 
             }
         });

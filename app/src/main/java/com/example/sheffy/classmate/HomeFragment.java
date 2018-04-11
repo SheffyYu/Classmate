@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.FragAdapter;
+import application.MyApplication;
 import bean.BookBean;
 
 
@@ -56,6 +57,7 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
     private String userName;
     private int bookListSize;
     private List<BookBean> bookList;
+    private MyApplication myApp;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -71,6 +73,7 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
+
 
         //设置用户名
         txv_user_name_home=(TextView) view.findViewById(R.id.txv_user_name_home);

@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 
 import java.util.Calendar;
 
+import application.MyApplication;
 import bean.ClassmateBean;
 import constant.ServerUrl;
 import http.HttpCallback;
@@ -35,6 +36,7 @@ public class AddItemActivity extends AppCompatActivity {
     private RadioGroup radgroup;
     private ClassmateBean classmateBean;
     private String bookName;
+    private MyApplication myApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +44,8 @@ public class AddItemActivity extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);         //去标题
         setContentView(R.layout.activity_add_item);
 
-        Intent intent=getIntent();
-        bookName=intent.getStringExtra("bookName");
+        myApp=(MyApplication)getApplication();
+        bookName=myApp.getBooknName();
 
         //初始化组件
         initView();
@@ -122,7 +124,7 @@ public class AddItemActivity extends AppCompatActivity {
 
     }
 
-    //判断文本框必填项是否为空，不为空则提交
+    //判断文本框必填项是否为空，数据是否符合规范不为空则提交
     protected void isEmpty(){
         if(et_classmate_name.getText().toString().length()==0){
             Toast.makeText(AddItemActivity.this,"姓名不能为空",Toast.LENGTH_SHORT).show();
@@ -130,8 +132,14 @@ public class AddItemActivity extends AppCompatActivity {
         else if(et_classmate_phone.getText().toString().length()==0){
             Toast.makeText(AddItemActivity.this,"联系方式不能为空",Toast.LENGTH_SHORT).show();
         }
+        else if(et_classmate_phone.getText().toString().length()>11){
+            Toast.makeText(AddItemActivity.this,"联系方式填写格式不正确",Toast.LENGTH_SHORT).show();
+        }
         else if(et_classmate_qq.getText().toString().length()==0){
             Toast.makeText(AddItemActivity.this,"QQ不能为空",Toast.LENGTH_SHORT).show();
+        }
+        else if(et_classmate_qq.getText().toString().length()>20){
+            Toast.makeText(AddItemActivity.this,"QQ号长度过长",Toast.LENGTH_SHORT).show();
         }
         else{
             //提交到服务器并跳转回目录
@@ -179,7 +187,6 @@ public class AddItemActivity extends AppCompatActivity {
                         Toast.makeText(AddItemActivity.this,"添加成功",Toast.LENGTH_SHORT).show();
                         //跳转到目录
                         Intent intent=new Intent(AddItemActivity.this,CatalogActivity.class);
-                        intent.putExtra("add_bookName",bookName);
                         startActivity(intent);
                         finish();   //结束添加页
                     }

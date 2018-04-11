@@ -1,6 +1,5 @@
 package com.example.sheffy.classmate;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.MyApplication;
 import bean.BookBean;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     private MyFragment myFg;
     private NotesFragment notesFg;
 
+    private MyApplication myApp;
     private int bookListSize;
     private String userName;
     private List<BookBean> bookList = new ArrayList<BookBean>();
@@ -62,12 +63,16 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);         //去标题
         setContentView(R.layout.activity_main);
 
-        Intent intent=getIntent();
-        userName=intent.getStringExtra("data_user_name");
-        //*****************************************************************
-        //如果数据无法传输,则取默认值1
-        bookListSize=intent.getIntExtra("data_bookListSize",1);
-        bookList=(ArrayList<BookBean>)intent.getSerializableExtra("data_bookList");
+        myApp=(MyApplication)getApplication();
+        userName=myApp.getUserName();
+        bookList=myApp.getBookBeanList();
+        bookListSize=myApp.getBookListSize();
+//        Intent intent=getIntent();
+//        userName=intent.getStringExtra("data_user_name");
+//        //*****************************************************************
+//        //如果数据无法传输,则取默认值1
+//        bookListSize=intent.getIntExtra("data_bookListSize",1);
+//        bookList=(ArrayList<BookBean>)intent.getSerializableExtra("data_bookList");
 
         Log.i("userName", "onCreate: "+userName);
 

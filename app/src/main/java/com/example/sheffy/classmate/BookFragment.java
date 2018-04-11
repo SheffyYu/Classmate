@@ -17,10 +17,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.MyApplication;
 import bean.BookBean;
 import bean.ClassmateBean;
-import http.ClassmateHttpUtills;
-import http.HttpCallback;
 
 
 /**
@@ -38,9 +37,8 @@ public class BookFragment extends Fragment{
 
     private String bookName,strCount;
 
-    private ClassmateListHttpCallback catalogCallBack;
     private List<ClassmateBean> catalogList=new ArrayList<ClassmateBean>();
-
+    private MyApplication myApp;
 
     public BookFragment() {
         // Required empty public constructor
@@ -82,16 +80,15 @@ public class BookFragment extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        myApp=(MyApplication)getActivity().getApplication();
+
         ll_book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("onClick", "点击一次 ");
-                //加载网络
-                catalogCallBack=new ClassmateListHttpCallback();
-                Log.i("onClick", "成功创建callback对象");
-                //获取目录列表
-                new ClassmateHttpUtills().getClassmateListByBookId(bookName,catalogCallBack);
-                Log.i("onClick", "接收不到数据");
+                Intent intent=new Intent(getActivity(),CatalogActivity.class);
+                myApp.setBooknName(bookName);
+                startActivity(intent);
+                Log.i("onClick:", "跳转成功");
             }
         });
 
@@ -119,35 +116,6 @@ public class BookFragment extends Fragment{
         txv_delete_book=(TextView)view.findViewById(R.id.txv_delete_book);
         txv_setup_book=(TextView)view.findViewById(R.id.txv_setup_book);
         ll_book=(LinearLayout)view.findViewById(R.id.ll_book);
-    }
-
-    class ClassmateListHttpCallback implements HttpCallback {
-        @Override
-        public void onSuccess(Object data){
-            //获取同学录列表
-            catalogList=(List<ClassmateBean>)data;
-            Log.i("catalogList",catalogList.toString());
-
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //跳转到目录
-                    ArrayList<ClassmateBean> arrayList=new ArrayList<ClassmateBean>();
-                    arrayList=(ArrayList<ClassmateBean>)catalogList;
-                    Intent intent=new Intent(getActivity(),CatalogActivity.class);
-                    intent.putExtra("data_book_name",bookName);
-                    intent.putExtra("data_catalogList",arrayList);
-                    startActivity(intent);
-                    Log.i("onClick:", "跳转成功");
-                }
-            });
-        }
-
-        @Override
-        public void onFailure(String message){
-            Log.i("catalogList", "网络加载错误");
-        }
-
     }
 
 

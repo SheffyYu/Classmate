@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.CatalogAdapter;
+import application.MyApplication;
 import bean.ClassmateBean;
 import http.ClassmateHttpUtills;
 import http.HttpCallback;
@@ -33,6 +34,7 @@ public class CatalogActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ClassmateListHttpCallback catalogCallBack;
     private List<ClassmateBean> catalogList=new ArrayList<ClassmateBean>();
+    private MyApplication myapp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +42,9 @@ public class CatalogActivity extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);         //去标题
         setContentView(R.layout.activity_catalog);
 
-
-
-        Intent intent=getIntent();
-        bookName=intent.getStringExtra("data_book_name");
-        if(bookName==null){
-            bookName=intent.getStringExtra("add_bookName");
-                Log.i("bookName:", bookName);
-        }
+        myapp=(MyApplication)getApplication();
+        bookName=myapp.getBooknName();
+        Log.i("onClick:", "获取bookName"+bookName);
 
         //加载网络
         catalogCallBack=new ClassmateListHttpCallback();
