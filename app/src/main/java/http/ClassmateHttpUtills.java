@@ -29,6 +29,13 @@ public class ClassmateHttpUtills {
         getData(ServerUrl.GET_CATALOG_BY_BOOKID + bookId,callback,t);
     }
 
+    //获取所有同学列表
+    public void getAllClassmateByUserId(String userId,final HttpCallback callback){
+        Type t = new TypeToken<List<ClassmateBean>>(){}.getType();
+        getData(ServerUrl.GET_ALL_CLASSMATE_BY_USERID + userId,callback,t);
+    }
+
+
     public void getData(String url,final HttpCallback callback,final Type type){
         // 创建请求对象
         final Request request = new Request.Builder()

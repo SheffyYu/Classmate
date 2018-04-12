@@ -15,8 +15,10 @@ import java.util.List;
 
 import application.MyApplication;
 import bean.BookBean;
+import bean.ClassmateBean;
 import bean.UserBean;
 import http.BookHttpUtils;
+import http.ClassmateHttpUtills;
 import http.HttpCallback;
 import http.UserHttpUtils;
 
@@ -32,7 +34,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private UserHttpCallback userCallback;
     private BookHttpCallback bookCallback;
+    private ClassmateCallback classmateCallBack;
     private List<BookBean> bookList = new ArrayList<BookBean>();
+    private List<ClassmateBean> classmateBeanList=new ArrayList<ClassmateBean>();
     private UserBean userBean;
     private int bookListSize;
     private MyApplication myApp;
@@ -129,6 +133,47 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+//                    //跳转到首页
+////                    ArrayList<BookBean> arrayList=new ArrayList<BookBean>();
+////                    arrayList=(ArrayList<BookBean>) bookList;
+////                    String userName=userBean.getUserId();
+//                    myApp=(MyApplication)getApplication();
+//                    myApp.setUserName(userBean.getUserId());
+//                    myApp.setBookBeanList(bookList);
+//                    myApp.setBookListSize(bookListSize);
+//
+//                    Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+////                    intent.putExtra("data_user_name",userName);
+////                    intent.putExtra("data_bookListSize",bookListSize);
+////                    intent.putExtra("data_bookList",arrayList);
+//                    startActivity(intent);
+//                    finish();   //结束登录页，首页点返回无法再跳转到登录页，直接退出app
+                    //加载网络
+                    classmateCallBack = new ClassmateCallback();
+                    //加载同学录列表
+                    new ClassmateHttpUtills().getAllClassmateByUserId(userBean.getUserId(), bookCallback);
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(String message){
+            Log.i("bookBean", "网络加载错误");
+        }
+
+    }
+
+
+    class ClassmateCallback implements HttpCallback{
+        @Override
+        public void onSuccess(Object data) {
+            //获取全部同学的列表
+            classmateBeanList=(List<ClassmateBean>)data;
+            Log.i("classmateBeanList", "获取所有同学："+classmateBeanList.toString());
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
                     //跳转到首页
 //                    ArrayList<BookBean> arrayList=new ArrayList<BookBean>();
 //                    arrayList=(ArrayList<BookBean>) bookList;
@@ -137,6 +182,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     myApp.setUserName(userBean.getUserId());
                     myApp.setBookBeanList(bookList);
                     myApp.setBookListSize(bookListSize);
+                    myApp.setAllClassmate(classmateBeanList);
 
                     Intent intent=new Intent(LoginActivity.this,MainActivity.class);
 //                    intent.putExtra("data_user_name",userName);
@@ -149,9 +195,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         @Override
-        public void onFailure(String message){
+        public void onFailure(String message) {
             Log.i("bookBean", "网络加载错误");
         }
-
     }
+
 }

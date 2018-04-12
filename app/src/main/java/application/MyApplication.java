@@ -18,6 +18,15 @@ public class MyApplication extends Application {
     private int bookListSize;
     private int classmateCount;
     private ClassmateBean classmateBean;
+    private List<ClassmateBean> allClassmate;
+
+    public List<ClassmateBean> getAllClassmate() {
+        return allClassmate;
+    }
+
+    public void setAllClassmate(List<ClassmateBean> allClassmate) {
+        this.allClassmate = allClassmate;
+    }
 
     public int getClassmateCount() {
         return classmateCount;

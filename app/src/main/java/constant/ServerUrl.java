@@ -29,4 +29,7 @@ public class ServerUrl {
 
     //删除同学
     public static String PUT_DELETE_CLASSMATE=SERVER_PATH+"/classmateController/deleteClassmate.action";
+
+    //获取所有同学
+    public static String GET_ALL_CLASSMATE_BY_USERID=SERVER_PATH+"/classmateController/getAllClassmateByUserId.action?userId=";
 }

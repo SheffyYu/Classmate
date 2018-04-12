@@ -37,7 +37,8 @@
         <activity
             android:name=".AddItemActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity android:name=".ShowClassmateActivity"></activity>
+        <activity android:name=".ShowClassmateActivity" />
+        <activity android:name=".SearchActivity"></activity>
     </application>
 
 </manifest>
