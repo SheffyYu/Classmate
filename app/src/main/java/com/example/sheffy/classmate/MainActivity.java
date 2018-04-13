@@ -1,5 +1,6 @@
 package com.example.sheffy.classmate;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -67,13 +68,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         userName=myApp.getUserName();
         bookList=myApp.getBookBeanList();
         bookListSize=myApp.getBookListSize();
-//        Intent intent=getIntent();
-//        userName=intent.getStringExtra("data_user_name");
-//        //*****************************************************************
-//        //如果数据无法传输,则取默认值1
-//        bookListSize=intent.getIntExtra("data_bookListSize",1);
-//        bookList=(ArrayList<BookBean>)intent.getSerializableExtra("data_bookList");
-
         Log.i("userName", "onCreate: "+userName);
 
         initView();
@@ -165,6 +159,19 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             case R.id.txv_search:
                 selectedAll();
                 btn_search.setSelected(true);
+                Intent intent=new Intent(MainActivity.this,SearchActivity.class);
+                startActivity(intent);
+                //返回时显示首页
+                selectedAll();
+                btn_home.setSelected(true);
+                if(homeFg == null){
+                    homeFg = new HomeFragment();        //如果首页碎片不存在则新建一个
+                    fgTransaction.add(R.id.flContainer,homeFg);
+
+                }
+                else{
+                    fgTransaction.show(homeFg);
+                }
                 break;
             //添加手账
             case R.id.txv_add:

@@ -101,6 +101,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //String 类型不能用 ==
                     else if(passwordEdt.equals(userBean.getPassword())){
                         Log.i("userBean", userBean.toString());
+                        Log.i("userBean", "**************************************************************************");
                         //加载网络
                         bookCallback=new BookHttpCallback();
                         //加载同学录列表
@@ -133,25 +134,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-//                    //跳转到首页
-////                    ArrayList<BookBean> arrayList=new ArrayList<BookBean>();
-////                    arrayList=(ArrayList<BookBean>) bookList;
-////                    String userName=userBean.getUserId();
-//                    myApp=(MyApplication)getApplication();
-//                    myApp.setUserName(userBean.getUserId());
-//                    myApp.setBookBeanList(bookList);
-//                    myApp.setBookListSize(bookListSize);
-//
-//                    Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-////                    intent.putExtra("data_user_name",userName);
-////                    intent.putExtra("data_bookListSize",bookListSize);
-////                    intent.putExtra("data_bookList",arrayList);
-//                    startActivity(intent);
-//                    finish();   //结束登录页，首页点返回无法再跳转到登录页，直接退出app
                     //加载网络
                     classmateCallBack = new ClassmateCallback();
                     //加载同学录列表
-                    new ClassmateHttpUtills().getAllClassmateByUserId(userBean.getUserId(), bookCallback);
+                    new ClassmateHttpUtills().getAllClassmateByUserId(userBean.getUserId(), classmateCallBack);
                 }
             });
         }
