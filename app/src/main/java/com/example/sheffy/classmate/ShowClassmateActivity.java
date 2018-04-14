@@ -127,7 +127,9 @@ public class ShowClassmateActivity extends AppCompatActivity {
         txv_change_c.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent=new Intent(ShowClassmateActivity.this,UpdateActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

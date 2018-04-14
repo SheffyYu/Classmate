@@ -27,6 +27,9 @@ public class ServerUrl {
     //添加同学
     public static String PUT_CLASSMATE=SERVER_PATH+"/classmateController/createClassmate.action";
 
+    //更新同学
+    public static String UPDATE_CLASSMATE=SERVER_PATH+"/classmateController/updateClassmate.action";
+
     //删除同学
     public static String PUT_DELETE_CLASSMATE=SERVER_PATH+"/classmateController/deleteClassmate.action";
 
