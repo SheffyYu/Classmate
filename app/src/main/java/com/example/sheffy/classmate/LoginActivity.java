@@ -17,8 +17,6 @@ import application.MyApplication;
 import bean.BookBean;
 import bean.ClassmateBean;
 import bean.UserBean;
-import http.BookHttpUtils;
-import http.ClassmateHttpUtills;
 import http.HttpCallback;
 import http.UserHttpUtils;
 
@@ -33,8 +31,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String passwordEdt;
 
     private UserHttpCallback userCallback;
-    private BookHttpCallback bookCallback;
-    private ClassmateCallback classmateCallBack;
+//    private BookHttpCallback bookCallback;
+//    private ClassmateCallback classmateCallBack;
     private List<BookBean> bookList = new ArrayList<BookBean>();
     private List<ClassmateBean> classmateBeanList=new ArrayList<ClassmateBean>();
     private UserBean userBean;
@@ -102,10 +100,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     else if(passwordEdt.equals(userBean.getPassword())){
                         Log.i("userBean", userBean.toString());
                         Log.i("userBean", "**************************************************************************");
-                        //加载网络
-                        bookCallback=new BookHttpCallback();
-                        //加载同学录列表
-                        new BookHttpUtils().getAllBookByUserId(userBean.getUserId(),bookCallback);
+                        myApp=(MyApplication)getApplication();
+                        myApp.setUserName(userBean.getUserId());
+                        //跳转到首页
+                        Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                        startActivity(intent);
+                        finish();   //结束登录页，首页点返回无法再跳转到登录页，直接退出app
                     }
                     else {
                         Toast.makeText(LoginActivity.this,"密码错误",Toast.LENGTH_SHORT).show();
@@ -118,71 +118,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         public void onFailure(String message){
             Log.i("userBean", "网络加载错误");
-        }
-    }
-
-
-    class BookHttpCallback implements HttpCallback {
-        @Override
-        public void onSuccess(Object data){
-            //获取同学录列表
-            bookList=(List<BookBean>)data;
-            Log.i("bookList", bookList.toString());
-            bookListSize=bookList.size();
-            Log.i("bookListSize", bookListSize+"");
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //加载网络
-                    classmateCallBack = new ClassmateCallback();
-                    //加载同学录列表
-                    new ClassmateHttpUtills().getAllClassmateByUserId(userBean.getUserId(), classmateCallBack);
-                }
-            });
-        }
-
-        @Override
-        public void onFailure(String message){
-            Log.i("bookBean", "网络加载错误");
-        }
-
-    }
-
-
-    class ClassmateCallback implements HttpCallback{
-        @Override
-        public void onSuccess(Object data) {
-            //获取全部同学的列表
-            classmateBeanList=(List<ClassmateBean>)data;
-            Log.i("classmateBeanList", "获取所有同学："+classmateBeanList.toString());
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //跳转到首页
-//                    ArrayList<BookBean> arrayList=new ArrayList<BookBean>();
-//                    arrayList=(ArrayList<BookBean>) bookList;
-//                    String userName=userBean.getUserId();
-                    myApp=(MyApplication)getApplication();
-                    myApp.setUserName(userBean.getUserId());
-                    myApp.setBookBeanList(bookList);
-                    myApp.setBookListSize(bookListSize);
-                    myApp.setAllClassmate(classmateBeanList);
-
-                    Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-//                    intent.putExtra("data_user_name",userName);
-//                    intent.putExtra("data_bookListSize",bookListSize);
-//                    intent.putExtra("data_bookList",arrayList);
-                    startActivity(intent);
-                    finish();   //结束登录页，首页点返回无法再跳转到登录页，直接退出app
-                }
-            });
-        }
-
-        @Override
-        public void onFailure(String message) {
-            Log.i("bookBean", "网络加载错误");
         }
     }
 

@@ -18,6 +18,8 @@ import java.util.List;
 import adapter.ClassmateAdapter;
 import application.MyApplication;
 import bean.ClassmateBean;
+import http.ClassmateHttpUtills;
+import http.HttpCallback;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -28,6 +30,8 @@ public class SearchActivity extends AppCompatActivity {
     private List<ClassmateBean> findList=new ArrayList<ClassmateBean>();
     private ClassmateAdapter classmateAdapter;
     private ClassmateAdapter findAdapter;
+    private ClassmateCallback classmateCallBack;
+    private  String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +40,74 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         myApplication=(MyApplication)getApplication();
-        classmateBeanList=myApplication.getAllClassmate();
+        userName=myApplication.getUserName();
 
-        //初始化组件
-        initView();
+        //加载网络
+        classmateCallBack = new ClassmateCallback();
+        //加载同学录列表
+        new ClassmateHttpUtills().getAllClassmateByUserId(userName, classmateCallBack);
 
+    }
+
+    //初始化组件
+    public void initView(){
+        sv_search=(SearchView)findViewById(R.id.sv_search_name);
+        lv_search_result=(ListView)findViewById(R.id.lv_search_result);
+
+        classmateAdapter=new ClassmateAdapter(SearchActivity.this,R.layout.catalog_item,classmateBeanList);
+        //最开始时显示全部
+        lv_search_result.setAdapter(classmateAdapter);
+        //单项可点击
+        lv_search_result.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ClassmateBean classmate=classmateBeanList.get(position);
+                myApplication=(MyApplication)getApplication();
+                myApplication.setClassmateBean(classmate);
+                Log.i("myApplication:", classmate.toString());
+
+                Intent intent=new Intent(SearchActivity.this, ShowClassmateActivity.class);
+                startActivity(intent);
+            }
+        });
+        lv_search_result.setTextFilterEnabled(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(SearchActivity.this,MainActivity.class);
+        startActivity(intent);
+        super.onBackPressed();
+    }
+
+    class ClassmateCallback implements HttpCallback {
+        @Override
+        public void onSuccess(Object data) {
+            //获取全部同学的列表
+            classmateBeanList=(List<ClassmateBean>)data;
+            Log.i("MA.classmateBeanList", "获取所有同学："+classmateBeanList.toString());
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //保存数据
+                    myApplication.setAllClassmate(classmateBeanList);
+
+                    //初始化组件
+                    initView();
+                    //搜索监听
+                    query();
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(String message) {
+            Log.i("bookBean", "网络加载错误");
+        }
+    }
+
+    public void query(){
         sv_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             // 当点击搜索按钮时触发该方法
             @Override
@@ -49,6 +116,7 @@ public class SearchActivity extends AppCompatActivity {
                 {
                     Toast.makeText(SearchActivity.this, "请输入查找内容！", Toast.LENGTH_SHORT).show();
                     lv_search_result.setAdapter(classmateAdapter);
+                    //单项可点击
                     lv_search_result.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -83,11 +151,11 @@ public class SearchActivity extends AppCompatActivity {
                         //查找到结果后显示list结果
                         findAdapter = new ClassmateAdapter(SearchActivity.this,R.layout.catalog_item,findList);
                         lv_search_result.setAdapter(findAdapter);
+                        //单项可点击
                         lv_search_result.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 ClassmateBean classmate=findList.get(position);
-                                myApplication=(MyApplication)getApplication();
                                 myApplication.setClassmateBean(classmate);
                                 Log.i("myApplication:", classmate.toString());
 
@@ -107,6 +175,7 @@ public class SearchActivity extends AppCompatActivity {
                 {
                     //为空时显示全部
                     lv_search_result.setAdapter(classmateAdapter);
+                    //单项可点击
                     lv_search_result.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -137,6 +206,7 @@ public class SearchActivity extends AppCompatActivity {
                     findAdapter.notifyDataSetChanged();
                     //显示查找到的结果
                     lv_search_result.setAdapter(findAdapter);
+                    //单项可点击
                     lv_search_result.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -153,30 +223,14 @@ public class SearchActivity extends AppCompatActivity {
                 return true;
             }
         });
-
     }
 
-    //初始化组件
-    public void initView(){
-        sv_search=(SearchView)findViewById(R.id.sv_search_name);
-        lv_search_result=(ListView)findViewById(R.id.lv_search_result);
-
-        classmateAdapter=new ClassmateAdapter(SearchActivity.this,R.layout.catalog_item,classmateBeanList);
-        //最开始时显示全部
-        lv_search_result.setAdapter(classmateAdapter);
-        lv_search_result.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ClassmateBean classmate=classmateBeanList.get(position);
-                myApplication=(MyApplication)getApplication();
-                myApplication.setClassmateBean(classmate);
-                Log.i("myApplication:", classmate.toString());
-
-                Intent intent=new Intent(SearchActivity.this, ShowClassmateActivity.class);
-                startActivity(intent);
-            }
-        });
-        lv_search_result.setTextFilterEnabled(true);
+    @Override
+    protected void onResume() {
+        //加载网络
+        classmateCallBack = new ClassmateCallback();
+        //加载同学录列表
+        new ClassmateHttpUtills().getAllClassmateByUserId(userName, classmateCallBack);
+        super.onResume();
     }
-
 }

@@ -148,9 +148,6 @@ public class ShowClassmateActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(ShowClassmateActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
-                        //跳转到目录
-                        Intent intent=new Intent(ShowClassmateActivity.this,CatalogActivity.class);
-                        startActivity(intent);
                         finish();   //结束该页
                     }
                 });
@@ -166,5 +163,10 @@ public class ShowClassmateActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

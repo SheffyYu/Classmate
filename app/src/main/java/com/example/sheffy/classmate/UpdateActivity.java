@@ -1,9 +1,8 @@
 package com.example.sheffy.classmate;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -51,7 +50,7 @@ public class UpdateActivity extends AppCompatActivity {
         myApp=(MyApplication)getApplication();
         initClb=new ClassmateBean();
         initClb=myApp.getClassmateBean();
-        bookName=myApp.getBooknName();
+        bookName=initClb.getBookId();
 
         cbList.add(initClb);
 
@@ -215,9 +214,6 @@ public class UpdateActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(UpdateActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
-                        //跳转到目录
-                        Intent intent=new Intent(UpdateActivity.this,CatalogActivity.class);
-                        startActivity(intent);
                         finish();   //结束添加页
                     }
                 });

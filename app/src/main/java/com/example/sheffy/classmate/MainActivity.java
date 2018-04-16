@@ -18,6 +18,9 @@ import java.util.List;
 
 import application.MyApplication;
 import bean.BookBean;
+import bean.ClassmateBean;
+import http.BookHttpUtils;
+import http.HttpCallback;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener
         ,HomeFragment.OnFragmentInteractionListener
@@ -37,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     private int bookListSize;
     private String userName;
     private List<BookBean> bookList = new ArrayList<BookBean>();
+    private BookHttpCallback bookCallback;
+    private List<ClassmateBean> classmateBeanList=new ArrayList<ClassmateBean>();
 
     public int getBookListSize() {
         return bookListSize;
@@ -66,13 +71,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
         myApp=(MyApplication)getApplication();
         userName=myApp.getUserName();
-        bookList=myApp.getBookBeanList();
-        bookListSize=myApp.getBookListSize();
-        Log.i("userName", "onCreate: "+userName);
+        Log.i("MA.userName", "onCreate: "+userName);
 
-        initView();
-        //默认启动时现实首页
-        initData();
+        //加载网络
+        bookCallback=new BookHttpCallback();
+        //加载同学录列表
+        new BookHttpUtils().getAllBookByUserId(userName,bookCallback);
 
     }
 
@@ -86,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         btn_add=(TextView) findViewById(R.id.txv_add);
         ly_content = (FrameLayout) findViewById(R.id.flContainer);
 
+        //绑定点击事件
         btn_home.setOnClickListener(this);
         btn_search.setOnClickListener(this);
         btn_my.setOnClickListener(this);
@@ -98,11 +103,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     public void initData(){
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fgTransaction=fragmentManager.beginTransaction();
-
-
+        //选中首页
         btn_home.setSelected(true);
         if(homeFg == null){
-            homeFg = new HomeFragment();        //如果首页碎片不存在则新建一个
+            homeFg = new HomeFragment();
             fgTransaction.add(R.id.flContainer,homeFg);
         }
         else{
@@ -161,6 +165,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 btn_search.setSelected(true);
                 Intent intent=new Intent(MainActivity.this,SearchActivity.class);
                 startActivity(intent);
+                finish();
+                break;
+            //添加手账
+            case R.id.txv_add:
+                //跳转到添加同学录页面
+
                 //返回时显示首页
                 selectedAll();
                 btn_home.setSelected(true);
@@ -172,10 +182,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 else{
                     fgTransaction.show(homeFg);
                 }
-                break;
-            //添加手账
-            case R.id.txv_add:
-                selectedAll();
                 break;
             //点滴记录
             case R.id.txv_notes:
@@ -214,8 +220,36 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     }
 
+    class BookHttpCallback implements HttpCallback {
+        @Override
+        public void onSuccess(Object data){
+            //获取同学录列表
+            bookList=(List<BookBean>)data;
+            Log.i("bookList", bookList.toString());
+            bookListSize=bookList.size();
+            Log.i("bookListSize", bookListSize+"");
 
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                   // 保存数据
+                    myApp=(MyApplication)getApplication();
+                    myApp.setBookBeanList(bookList);
+                    myApp.setBookListSize(bookListSize);
 
+                    initView();
+                    //默认启动时现实首页
+                    initData();
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(String message){
+            Log.i("bookBean", "网络加载错误");
+        }
+
+    }
 
 }
 

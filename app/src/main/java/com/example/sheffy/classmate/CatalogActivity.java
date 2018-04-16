@@ -115,4 +115,21 @@ public class CatalogActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        //加载网络
+        catalogCallBack=new ClassmateListHttpCallback();
+        Log.i("onClick", "成功创建callback对象");
+        //获取目录列表
+        new ClassmateHttpUtills().getClassmateListByBookId(bookName,catalogCallBack);
+        Log.i("onClick", "接收不到数据");
+        super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(CatalogActivity.this,MainActivity.class);
+        startActivity(intent);
+        super.onBackPressed();
+    }
 }

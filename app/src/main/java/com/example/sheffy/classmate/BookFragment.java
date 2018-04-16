@@ -45,6 +45,11 @@ public class BookFragment extends Fragment{
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     public static BookFragment newInstance(BookBean bookBean){
         BookFragment bookFragment = new BookFragment();
 
@@ -90,6 +95,8 @@ public class BookFragment extends Fragment{
                 myApp.setBooknName(bookName);
                 startActivity(intent);
                 Log.i("onClick:", "跳转成功");
+                //为了更新篇数
+                getActivity().finish();
             }
         });
 
