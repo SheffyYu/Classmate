@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public class ClassmateBean implements Serializable {
     private String bookId;
+    private String userId;
     private String classmateName;
     private String sex;
     private String birthday;        //生日的格式是 xxxx-xx-xx
@@ -19,6 +20,14 @@ public class ClassmateBean implements Serializable {
     private String yourWord;
     private String bloodGroup;
     private String hobby;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getBookId() {
         return bookId;
@@ -119,6 +128,7 @@ public class ClassmateBean implements Serializable {
     public String toString() {
         return "ClassmateBean[" +
                 "bookId=" + bookId +
+                ",userId=" + userId +
                 ",classmateName=" + classmateName +
                 ",sex=" + sex +
                 ",birthday=" + birthday +

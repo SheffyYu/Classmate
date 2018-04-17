@@ -35,7 +35,7 @@ public class AddItemActivity extends AppCompatActivity {
     private Button btn_post_classmate;
     private RadioGroup radgroup;
     private ClassmateBean classmateBean;
-    private String bookName;
+    private String bookName,userName;
     private MyApplication myApp;
 
     @Override
@@ -46,6 +46,8 @@ public class AddItemActivity extends AppCompatActivity {
 
         myApp=(MyApplication)getApplication();
         bookName=myApp.getBooknName();
+        userName=myApp.getUserName();
+
 
         //初始化组件
         initView();
@@ -145,6 +147,7 @@ public class AddItemActivity extends AppCompatActivity {
             //提交到服务器并跳转回目录
             classmateBean=new ClassmateBean();
             classmateBean.setBookId(bookName);
+            classmateBean.setUserId(userName);
             classmateBean.setClassmateName(et_classmate_name.getText().toString());
 
             //获取性别

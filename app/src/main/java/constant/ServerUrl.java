@@ -7,9 +7,7 @@ package constant;
 public class ServerUrl {
     //服务器IP地址
     public static String IP = "192.168.1.103";
-//    public static String IP = "58.19.2.210";
-
-//    public static String IP = "192.168.43.73";
+//    public static String IP = "192.168.1.105";
     public static String SERVER_PATH = "http://" + IP + ":8080";
 
     //获取用户名和密码
@@ -20,6 +18,9 @@ public class ServerUrl {
 
     //获取同学录列表
     public static String GET_BOOK_BY_USERID=SERVER_PATH+"/bookController/getAllBookByUserId.action?userId=";
+
+    //添加同学录
+    public static String PUT_BOOK=SERVER_PATH+"/bookController/createBook.action";
 
     //获取目录
     public static String GET_CATALOG_BY_BOOKID=SERVER_PATH+"/classmateController/getItemListByBookId.action?bookId=";
@@ -32,6 +33,9 @@ public class ServerUrl {
 
     //删除同学
     public static String PUT_DELETE_CLASSMATE=SERVER_PATH+"/classmateController/deleteClassmate.action";
+
+    //删除同学录
+    public static String PUT_DELETE_BOOK=SERVER_PATH+"/bookController/deleteBook.action";
 
     //获取所有同学
     public static String GET_ALL_CLASSMATE_BY_USERID=SERVER_PATH+"/classmateController/getAllClassmateByUserId.action?userId=";

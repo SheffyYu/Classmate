@@ -14,12 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import application.MyApplication;
 import bean.BookBean;
-import bean.ClassmateBean;
 
 
 /**
@@ -31,13 +27,12 @@ import bean.ClassmateBean;
 public class BookFragment extends Fragment{
 
     private OnFragmentInteractionListener mListener;
-    private TextView txv_book_name,txv_classmate_number,txv_delete_book,txv_setup_book;
+    private TextView txv_book_name,txv_classmate_number,txv_setup_book;
     private LinearLayout ll_book;
     private View view;
 
     private String bookName,strCount;
 
-    private List<ClassmateBean> catalogList=new ArrayList<ClassmateBean>();
     private MyApplication myApp;
     private int classmateCount;
 
@@ -92,19 +87,12 @@ public class BookFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(),CatalogActivity.class);
+                myApp.setClassmateCount(classmateCount);
                 myApp.setBooknName(bookName);
                 startActivity(intent);
                 Log.i("onClick:", "跳转成功");
                 //为了更新篇数
                 getActivity().finish();
-            }
-        });
-
-        //删除
-        txv_delete_book.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -121,9 +109,13 @@ public class BookFragment extends Fragment{
     public void initView(){
         txv_book_name=(TextView)view.findViewById(R.id.txv_book_name);
         txv_classmate_number=(TextView)view.findViewById(R.id.txv_classmate_number);
-        txv_delete_book=(TextView)view.findViewById(R.id.txv_delete_book);
         txv_setup_book=(TextView)view.findViewById(R.id.txv_setup_book);
         ll_book=(LinearLayout)view.findViewById(R.id.ll_book);
+    }
+
+    //删除同学录，提交服务器
+    protected void deleteBook(){
+
     }
 
 

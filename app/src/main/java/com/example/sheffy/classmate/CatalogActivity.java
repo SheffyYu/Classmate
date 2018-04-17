@@ -1,8 +1,10 @@
 package com.example.sheffy.classmate;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,15 +14,21 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import adapter.CatalogAdapter;
 import application.MyApplication;
+import bean.BookBean;
 import bean.ClassmateBean;
+import constant.ServerUrl;
 import http.ClassmateHttpUtills;
 import http.HttpCallback;
+import http.HttpUtils;
 
 public class CatalogActivity extends AppCompatActivity {
 
@@ -30,11 +38,14 @@ public class CatalogActivity extends AppCompatActivity {
     private FloatingActionButton fab_add_item;
     private CatalogAdapter catalogAdapter;
     private LinearLayoutManager linearLayoutManager;
-    private TextView txv_title;
+    private TextView txv_title,txv_default,txv_delete;
     private Toolbar toolbar;
     private ClassmateListHttpCallback catalogCallBack;
     private List<ClassmateBean> catalogList=new ArrayList<ClassmateBean>();
     private MyApplication myapp;
+    private BookBean bookBean;
+    private String userName;
+    private int classmateCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +55,8 @@ public class CatalogActivity extends AppCompatActivity {
 
         myapp=(MyApplication)getApplication();
         bookName=myapp.getBooknName();
+        userName= myapp.getUserName();
+        classmateCount=myapp.getClassmateCount();
         Log.i("onClick:", "获取bookName"+bookName);
 
         //加载网络
@@ -61,6 +74,8 @@ public class CatalogActivity extends AppCompatActivity {
         fab_add_item=(FloatingActionButton)findViewById(R.id.fab_add_item);
         txv_title=(TextView)findViewById(R.id.txv_title);
         toolbar = (Toolbar) findViewById(R.id.title_bar);
+        txv_default=(TextView)findViewById(R.id.txv_default);
+        txv_delete=(TextView)findViewById(R.id.txv_delete_book);
 
         linearLayoutManager=new LinearLayoutManager(this);
         catalogAdapter=new CatalogAdapter(catalogList);
@@ -92,6 +107,47 @@ public class CatalogActivity extends AppCompatActivity {
                         actionBar.setDisplayShowTitleEnabled(false);
                     }
 
+                    //如果没有同学，则提示添加
+                    if(catalogList.size()==0){
+                        txv_default.setText("没有同学唉~快去添加吧~~");
+                    }
+                    else{
+                        txv_default.setText("");
+                    }
+
+                    txv_delete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //弹出对话框
+                            AlertDialog dialog = new AlertDialog.Builder(CatalogActivity.this)
+                                    .setTitle("提示")//设置对话框的标题
+                                    .setMessage("你确定要删除该同学录吗？")//设置对话框的内容
+                                    //设置对话框的按钮
+                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+//                                            Toast.makeText(CatalogActivity.this, "取消", Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+//                                            Toast.makeText(CatalogActivity.this, "删除", Toast.LENGTH_SHORT).show();
+                                            //提交到服务器，做删除操作*****************************************************************
+                                            dialog.dismiss();
+                                            bookBean=new BookBean();
+                                            bookBean.setClassmateCount(classmateCount);
+                                            bookBean.setUserId(userName);
+                                            bookBean.setBookId(bookName);
+
+                                            deleteBook();
+                                        }
+                                    }).create();
+                            dialog.show();
+                        }
+                    });
+
 
                     fab_add_item.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -112,6 +168,41 @@ public class CatalogActivity extends AppCompatActivity {
         public void onFailure(String message){
             Log.i("catalogList", "网络加载错误");
         }
+
+    }
+
+    protected void deleteBook(){
+
+        //转换成 Json 文本
+        Gson gson = new Gson();
+        String json =  gson.toJson(bookBean);
+        Log.i("json", "putDeleteClassmate: "+json);
+
+        // 提交 json 文本到服务器
+        new HttpUtils().postData(ServerUrl.PUT_DELETE_BOOK,json,new HttpCallback(){
+            @Override
+            public void onSuccess(Object data) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(CatalogActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(CatalogActivity.this,MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String message) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(CatalogActivity.this,"删除失败,网络错误",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
 
     }
 

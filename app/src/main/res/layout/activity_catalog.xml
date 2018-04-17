@@ -5,6 +5,7 @@
     android:id="@+id/activity_catalog"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBule"
     tools:context="com.example.sheffy.classmate.CatalogActivity">
 
     <android.support.v7.widget.Toolbar
@@ -23,6 +24,19 @@
             android:textColor="@color/white"
             android:textSize="19sp"/>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="end">
+            <TextView
+                android:id="@+id/txv_delete_book"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@mipmap/delete_c"/>
+        </LinearLayout>
+
+
     </android.support.v7.widget.Toolbar>
 
 
@@ -34,6 +48,14 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="5dp"/>
+
+    <TextView
+        android:id="@+id/txv_default"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_below="@id/title_bar"/>
 
 
     <android.support.design.widget.FloatingActionButton

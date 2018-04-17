@@ -106,14 +106,14 @@ public class ShowClassmateActivity extends AppCompatActivity {
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(ShowClassmateActivity.this, "取消", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(ShowClassmateActivity.this, "取消", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             }
                         })
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(ShowClassmateActivity.this, "删除", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(ShowClassmateActivity.this, "删除", Toast.LENGTH_SHORT).show();
                                 //提交到服务器，做删除操作*****************************************************************
                                 dialog.dismiss();
                                 deleteClassmate();

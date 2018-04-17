@@ -10,12 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import application.MyApplication;
-import bean.BookBean;
-import bean.ClassmateBean;
 import bean.UserBean;
 import http.HttpCallback;
 import http.UserHttpUtils;
@@ -31,12 +26,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String passwordEdt;
 
     private UserHttpCallback userCallback;
-//    private BookHttpCallback bookCallback;
-//    private ClassmateCallback classmateCallBack;
-    private List<BookBean> bookList = new ArrayList<BookBean>();
-    private List<ClassmateBean> classmateBeanList=new ArrayList<ClassmateBean>();
     private UserBean userBean;
-    private int bookListSize;
     private MyApplication myApp;
 
     @Override
@@ -99,7 +89,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //String 类型不能用 ==
                     else if(passwordEdt.equals(userBean.getPassword())){
                         Log.i("userBean", userBean.toString());
-                        Log.i("userBean", "**************************************************************************");
                         myApp=(MyApplication)getApplication();
                         myApp.setUserName(userBean.getUserId());
                         //跳转到首页

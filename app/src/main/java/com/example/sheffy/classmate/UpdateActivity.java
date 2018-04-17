@@ -37,7 +37,7 @@ public class UpdateActivity extends AppCompatActivity {
     private Button btn_post_classmate;
     private RadioGroup radgroup;
     private ClassmateBean classmateBean,initClb;
-    private String bookName;
+    private String bookName,userName;
     private MyApplication myApp;
     private List<ClassmateBean> cbList=new ArrayList<ClassmateBean>();
 
@@ -51,6 +51,7 @@ public class UpdateActivity extends AppCompatActivity {
         initClb=new ClassmateBean();
         initClb=myApp.getClassmateBean();
         bookName=initClb.getBookId();
+        userName=myApp.getUserName();
 
         cbList.add(initClb);
 
@@ -172,6 +173,7 @@ public class UpdateActivity extends AppCompatActivity {
             //提交到服务器并跳转回目录
             classmateBean=new ClassmateBean();
             classmateBean.setBookId(bookName);
+            classmateBean.setUserId(userName);
             classmateBean.setClassmateName(et_classmate_name.getText().toString());
 
             //获取性别

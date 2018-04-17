@@ -18,7 +18,6 @@ import java.util.List;
 
 import application.MyApplication;
 import bean.BookBean;
-import bean.ClassmateBean;
 import http.BookHttpUtils;
 import http.HttpCallback;
 
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     private String userName;
     private List<BookBean> bookList = new ArrayList<BookBean>();
     private BookHttpCallback bookCallback;
-    private List<ClassmateBean> classmateBeanList=new ArrayList<ClassmateBean>();
 
     public int getBookListSize() {
         return bookListSize;
@@ -170,18 +168,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             //添加手账
             case R.id.txv_add:
                 //跳转到添加同学录页面
-
-                //返回时显示首页
-                selectedAll();
-                btn_home.setSelected(true);
-                if(homeFg == null){
-                    homeFg = new HomeFragment();        //如果首页碎片不存在则新建一个
-                    fgTransaction.add(R.id.flContainer,homeFg);
-
-                }
-                else{
-                    fgTransaction.show(homeFg);
-                }
+                Intent intent1=new Intent(MainActivity.this,AddBookActivity.class);
+                startActivity(intent1);
+                finish();
                 break;
             //点滴记录
             case R.id.txv_notes:

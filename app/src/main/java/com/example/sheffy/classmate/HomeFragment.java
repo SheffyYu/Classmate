@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.FragAdapter;
-import application.MyApplication;
 import bean.BookBean;
 
 
@@ -57,7 +56,6 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
     private String userName;
     private int bookListSize;
     private List<BookBean> bookList;
-    private MyApplication myApp;
 
     public HomeFragment() {
         // Required empty public constructor
