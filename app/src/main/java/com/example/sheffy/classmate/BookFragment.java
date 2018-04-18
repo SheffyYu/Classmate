@@ -27,15 +27,11 @@ import bean.BookBean;
 public class BookFragment extends Fragment{
 
     private OnFragmentInteractionListener mListener;
-    private TextView txv_book_name,txv_classmate_number,txv_setup_book;
+    private TextView txv_book_name,txv_introduce,txv_setup_book;
     private LinearLayout ll_book;
     private View view;
-
-    private String bookName,strCount;
-
+    private String bookName,introduce;
     private MyApplication myApp;
-    private int classmateCount;
-
     public BookFragment() {
         // Required empty public constructor
     }
@@ -43,40 +39,42 @@ public class BookFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        myApp=(MyApplication)getActivity().getApplication();
+
+        bookName=getArguments().getString("bookName","我的同学录");
+        introduce=getArguments().getString("introduce","默认");
     }
 
+//为了传数据，保存数据
     public static BookFragment newInstance(BookBean bookBean){
         BookFragment bookFragment = new BookFragment();
 
         Bundle args = new Bundle();
         args.putString("bookName",bookBean.getBookId());
-        args.putInt("classmateCount", bookBean.getClassmateCount());
+        args.putString("introduce", bookBean.getIntroduce());
         bookFragment.setArguments(args);
 
         return bookFragment;
     }
 
-
+//UI操作
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view=inflater.inflate(R.layout.fragment_book, container, false);
 
-        classmateCount=getArguments().getInt("classmateCount", 0);
-        bookName=getArguments().getString("bookName","我的同学录");
-        strCount=classmateCount+"";
-
         //初始化组件
         initView();
 
-        txv_classmate_number.setText(strCount);
+        txv_introduce.setText(introduce);
         txv_book_name.setText(bookName);
 
         return view;
     }
 
-
+//碎片中的一些操作，如点击事件
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -87,12 +85,10 @@ public class BookFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(),CatalogActivity.class);
-                myApp.setClassmateCount(classmateCount);
+                myApp.setIntroduce(introduce);
                 myApp.setBooknName(bookName);
                 startActivity(intent);
                 Log.i("onClick:", "跳转成功");
-                //为了更新篇数
-                getActivity().finish();
             }
         });
 
@@ -108,14 +104,9 @@ public class BookFragment extends Fragment{
     //初始化组件
     public void initView(){
         txv_book_name=(TextView)view.findViewById(R.id.txv_book_name);
-        txv_classmate_number=(TextView)view.findViewById(R.id.txv_classmate_number);
+        txv_introduce=(TextView)view.findViewById(R.id.txv_introduce);
         txv_setup_book=(TextView)view.findViewById(R.id.txv_setup_book);
         ll_book=(LinearLayout)view.findViewById(R.id.ll_book);
-    }
-
-    //删除同学录，提交服务器
-    protected void deleteBook(){
-
     }
 
 

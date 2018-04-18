@@ -23,7 +23,7 @@ public class ServerUrl {
     public static String PUT_BOOK=SERVER_PATH+"/bookController/createBook.action";
 
     //获取目录
-    public static String GET_CATALOG_BY_BOOKID=SERVER_PATH+"/classmateController/getItemListByBookId.action?bookId=";
+    public static String GET_CATALOG_BY_BOOKID=SERVER_PATH+"/classmateController/getItemListByBookId.action";
 
     //添加同学
     public static String PUT_CLASSMATE=SERVER_PATH+"/classmateController/createClassmate.action";

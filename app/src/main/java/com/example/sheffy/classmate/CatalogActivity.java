@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,6 @@ import application.MyApplication;
 import bean.BookBean;
 import bean.ClassmateBean;
 import constant.ServerUrl;
-import http.ClassmateHttpUtills;
 import http.HttpCallback;
 import http.HttpUtils;
 
@@ -40,12 +40,10 @@ public class CatalogActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private TextView txv_title,txv_default,txv_delete;
     private Toolbar toolbar;
-    private ClassmateListHttpCallback catalogCallBack;
     private List<ClassmateBean> catalogList=new ArrayList<ClassmateBean>();
     private MyApplication myapp;
-    private BookBean bookBean;
-    private String userName;
-    private int classmateCount;
+    private BookBean bookBean,initBookBean;
+    private String userName,introduce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +54,17 @@ public class CatalogActivity extends AppCompatActivity {
         myapp=(MyApplication)getApplication();
         bookName=myapp.getBooknName();
         userName= myapp.getUserName();
-        classmateCount=myapp.getClassmateCount();
+        introduce=myapp.getIntroduce();
         Log.i("onClick:", "获取bookName"+bookName);
 
-        //加载网络
-        catalogCallBack=new ClassmateListHttpCallback();
-        Log.i("onClick", "成功创建callback对象");
-        //获取目录列表
-        new ClassmateHttpUtills().getClassmateListByBookId(bookName,catalogCallBack);
-        Log.i("onClick", "接收不到数据");
+        //采用post方法获取数据
+        initBookBean=new BookBean();
+        initBookBean.setIntroduce(introduce);
+        initBookBean.setUserId(userName);
+        initBookBean.setBookId(bookName);
 
+        //获取数据
+        getCatologList();
     }
 
     //初始化/绑定事件
@@ -85,94 +84,110 @@ public class CatalogActivity extends AppCompatActivity {
         rv_list_name.setAdapter(catalogAdapter);
     }
 
-    class ClassmateListHttpCallback implements HttpCallback {
-        @Override
-        public void onSuccess(Object data){
-            //获取同学录列表
-            catalogList=(List<ClassmateBean>)data;
-            Log.i("catalogList",catalogList.toString());
+    public void getCatologList(){
+        Gson gson=new Gson();
+        String json=gson.toJson(initBookBean);
+        Log.i("json", "postBookBean: "+json);
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //初始化数据
-                    initView();
+        // 提交 json 文本到服务器
+        new HttpUtils().postData(ServerUrl.GET_CATALOG_BY_BOOKID,json,new HttpCallback(){
+            @Override
+            public void onSuccess(Object data) {
+                //获取同学录列表
+                Gson g=new Gson();
+                catalogList=g.fromJson(data.toString(),new TypeToken<List<ClassmateBean>>(){}.getType());
+                Log.i("catalogList",catalogList.toString());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //初始化数据
+                        initView();
 
-                    //设置标题
-                    txv_title.setText(bookName);
-                    Log.i("bookName:", bookName);
-                    setSupportActionBar(toolbar);
-                    android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-                    if (actionBar != null){
-                        actionBar.setDisplayShowTitleEnabled(false);
-                    }
-
-                    //如果没有同学，则提示添加
-                    if(catalogList.size()==0){
-                        txv_default.setText("没有同学唉~快去添加吧~~");
-                    }
-                    else{
-                        txv_default.setText("");
-                    }
-
-                    txv_delete.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //弹出对话框
-                            AlertDialog dialog = new AlertDialog.Builder(CatalogActivity.this)
-                                    .setTitle("提示")//设置对话框的标题
-                                    .setMessage("你确定要删除该同学录吗？")//设置对话框的内容
-                                    //设置对话框的按钮
-                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-//                                            Toast.makeText(CatalogActivity.this, "取消", Toast.LENGTH_SHORT).show();
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-//                                            Toast.makeText(CatalogActivity.this, "删除", Toast.LENGTH_SHORT).show();
-                                            //提交到服务器，做删除操作*****************************************************************
-                                            dialog.dismiss();
-                                            bookBean=new BookBean();
-                                            bookBean.setClassmateCount(classmateCount);
-                                            bookBean.setUserId(userName);
-                                            bookBean.setBookId(bookName);
-
-                                            deleteBook();
-                                        }
-                                    }).create();
-                            dialog.show();
+                        //设置标题
+                        txv_title.setText(bookName);
+                        Log.i("bookName:", bookName);
+                        setSupportActionBar(toolbar);
+                        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+                        if (actionBar != null){
+                            actionBar.setDisplayShowTitleEnabled(false);
                         }
-                    });
 
-
-                    fab_add_item.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //此处跳转到添加页面
-                            Intent intent=new Intent(CatalogActivity.this,AddItemActivity.class);
-                            intent.putExtra("bookName",bookName);
-                            startActivity(intent);
-                            finish();
+                        //如果没有同学，则提示添加
+                        if(catalogList.size()==0){
+                            txv_default.setText("没有同学唉~快去添加吧~~");
                         }
-                    });
+                        else{
+                            txv_default.setText("");
+                        }
 
-                }
-            });
-        }
+                        //设置点击事件
+                        click();
 
-        @Override
-        public void onFailure(String message){
-            Log.i("catalogList", "网络加载错误");
-        }
+                    }
+                });
+            }
 
+            @Override
+            public void onFailure(String message) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(CatalogActivity.this,"提交失败,网络错误",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
-    protected void deleteBook(){
+    //设置监听器
+    protected void click(){
+        txv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //弹出对话框
+                AlertDialog dialog = new AlertDialog.Builder(CatalogActivity.this)
+                        .setTitle("提示")//设置对话框的标题
+                        .setMessage("你确定要删除该同学录吗？")//设置对话框的内容
+                        //设置对话框的按钮
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //提交到服务器，做删除操作
+                                dialog.dismiss();
+                                bookBean=new BookBean();
+                                bookBean.setIntroduce(introduce);
+                                bookBean.setUserId(userName);
+                                bookBean.setBookId(bookName);
+                                //删除的网络操作
+                                deleteBook();
+                            }
+                        }).create();
+                dialog.show();
+            }
+        });
 
+
+        fab_add_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //此处跳转到添加页面
+                Intent intent=new Intent(CatalogActivity.this,AddItemActivity.class);
+                intent.putExtra("bookName",bookName);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+
+    //删除书本的操作
+    protected void deleteBook(){
         //转换成 Json 文本
         Gson gson = new Gson();
         String json =  gson.toJson(bookBean);
@@ -186,6 +201,10 @@ public class CatalogActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(CatalogActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
+                        //***************************************************************//
+                        //为了这一步，老子各种方法都试过了，mdzz,再出问题，老子就跟你说再见//
+                        MainActivity.ma.finish();
+                        //***************************************************************//
                         Intent intent=new Intent(CatalogActivity.this,MainActivity.class);
                         startActivity(intent);
                         finish();
@@ -208,19 +227,12 @@ public class CatalogActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        //加载网络
-        catalogCallBack=new ClassmateListHttpCallback();
-        Log.i("onClick", "成功创建callback对象");
-        //获取目录列表
-        new ClassmateHttpUtills().getClassmateListByBookId(bookName,catalogCallBack);
-        Log.i("onClick", "接收不到数据");
+        getCatologList();
         super.onResume();
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(CatalogActivity.this,MainActivity.class);
-        startActivity(intent);
         super.onBackPressed();
     }
 }

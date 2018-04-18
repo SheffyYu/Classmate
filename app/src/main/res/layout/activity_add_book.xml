@@ -49,6 +49,7 @@
         android:id="@+id/ll_book_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_marginTop="20dp"
         android:background="@color/white">
 
@@ -56,10 +57,22 @@
             android:id="@+id/et_book_name"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="请输入名称"
+            android:hint="请输入名称1~10个字符"
             android:textColorHint="@color/hint"
             android:inputType="text"
             android:maxEms="10"
+            android:maxLines="1"
+            android:layout_marginLeft="5dp"
+            android:theme="@style/EditText"/>
+
+        <EditText
+            android:id="@+id/et_book_introduce"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="请输入介绍0~20个字符"
+            android:textColorHint="@color/hint"
+            android:inputType="text"
+            android:maxEms="20"
             android:maxLines="1"
             android:layout_marginLeft="5dp"
             android:theme="@style/EditText"/>

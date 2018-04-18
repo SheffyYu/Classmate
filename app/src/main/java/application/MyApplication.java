@@ -16,7 +16,7 @@ public class MyApplication extends Application {
     private String booknName;
     private List<BookBean> bookBeanList;
     private int bookListSize;
-    private int classmateCount;
+    private String introduce;
     private ClassmateBean classmateBean;
     private List<ClassmateBean> allClassmate;
 
@@ -28,12 +28,12 @@ public class MyApplication extends Application {
         this.allClassmate = allClassmate;
     }
 
-    public int getClassmateCount() {
-        return classmateCount;
+    public String getIntroduce() {
+        return introduce;
     }
 
-    public void setClassmateCount(int classmateCount) {
-        this.classmateCount = classmateCount;
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
     }
 
     public int getBookListSize() {

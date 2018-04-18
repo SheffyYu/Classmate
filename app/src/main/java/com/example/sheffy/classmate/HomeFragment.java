@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.FragAdapter;
+import application.MyApplication;
 import bean.BookBean;
 
 
@@ -56,6 +57,7 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
     private String userName;
     private int bookListSize;
     private List<BookBean> bookList;
+    private MyApplication myApp;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -84,14 +86,32 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
         iv_red_piont = (ImageView) view.findViewById(R.id.iv_red_piont);
 
         initData();
+        initPointData();
+        //viewpager 滑动时候圆点的动画
+        initViewPager();
 
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+
+    //当从其他活动中返回时，刷新首页的内容
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        // TODO Auto-generated method stub
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            //从主界面函数中获取数据
+            myApp=(MyApplication)getActivity().getApplication();
+            userName=myApp.getUserName();
+            bookListSize=myApp.getBookListSize();
+            bookList=myApp.getBookBeanList();
+            //清空小圆点，为了避免小圆点重复添加或者多余添加
+            ll_container.removeAllViews();
+            //刷新碎片和小圆点
+            initData();
+            initPointData();
+            //viewpager 滑动时候圆点的动画
+            initViewPager();
         }
     }
 
@@ -105,45 +125,13 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
                     + " must implement OnFragmentInteractionListener");
         }
         //从主界面函数中获取数据
-        userName=((MainActivity)getActivity()).getUserName();
-        bookListSize=((MainActivity)getActivity()).getBookListSize();
-        bookList=((MainActivity)getActivity()).getBookList();
+        myApp=(MyApplication)getActivity().getApplication();
+        userName=myApp.getUserName();
+        bookListSize=myApp.getBookListSize();
+        bookList=myApp.getBookBeanList();
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
-    //BookFragment的数据交互
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    //点击事件
-    public void onClick(View v) {
-
-    }
-
-//初始化碎片
+    //初始化碎片
     private void initData() {
         //存Frangment的list
         fragmentList = new ArrayList<Fragment>();
@@ -157,10 +145,6 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
 
         fragAdapter = new FragAdapter(getChildFragmentManager(), fragmentList);
         viewPager.setAdapter(fragAdapter);
-        initPointData();
-        //viewpager 滑动时候圆点的动画
-        initViewPager();
-
 
     }
 
@@ -230,6 +214,48 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
             }
         });
     }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
+    }
+
+    //BookFragment的数据交互
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    //点击事件
+    public void onClick(View v) {
+
+    }
+
+
 }
 
 

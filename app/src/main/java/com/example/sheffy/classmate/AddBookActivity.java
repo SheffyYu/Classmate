@@ -25,13 +25,13 @@ import http.HttpUtils;
 public class AddBookActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TextView txv_sure,txv_bg;
-    private EditText et_book_name;
+    private EditText et_book_name,et_book_introduce;
     private String bookName;
     private MyApplication myApplication;
     private List<BookBean> bookBeanList=new ArrayList<BookBean>();
     private int bookListSize;
     private BookBean bookBean;
-    private String userName;
+    private String userName,introduce;
 
 
     @Override
@@ -60,6 +60,7 @@ public class AddBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 bookName=et_book_name.getText().toString();
+                introduce=et_book_introduce.getText().toString();
                 Log.i("ABA:bookName", bookName);
                 if(bookName.length()==0){
                     Toast.makeText(AddBookActivity.this,"名称不能为空",Toast.LENGTH_SHORT).show();
@@ -76,7 +77,7 @@ public class AddBookActivity extends AppCompatActivity {
                         bookBean=new BookBean();
                         bookBean.setBookId(bookName);
                         bookBean.setUserId(userName);
-                        bookBean.setClassmateCount(0);
+                        bookBean.setIntroduce(introduce);
                         putBook();
                     }
                 }
@@ -91,6 +92,7 @@ public class AddBookActivity extends AppCompatActivity {
         txv_sure=(TextView)findViewById(R.id.txv_sure_ab);
         txv_bg=(TextView)findViewById(R.id.txv_bg_ab);
         et_book_name=(EditText)findViewById(R.id.et_book_name);
+        et_book_introduce=(EditText)findViewById(R.id.et_book_introduce);
     }
 
     //判断同学录是否已经存在
@@ -142,8 +144,6 @@ public class AddBookActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(AddBookActivity.this,MainActivity.class);
-        startActivity(intent);
         super.onBackPressed();
     }
 }

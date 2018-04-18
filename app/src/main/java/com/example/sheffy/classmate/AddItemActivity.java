@@ -113,6 +113,7 @@ public class AddItemActivity extends AppCompatActivity {
         });
     }
 
+    //时间的对话框
     protected void showDatePickDlg() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(AddItemActivity.this, new DatePickerDialog.OnDateSetListener() {
@@ -157,7 +158,7 @@ public class AddItemActivity extends AppCompatActivity {
                     classmateBean.setSex(rd.getText().toString());
                 }
             }
-
+            //其他数据
             classmateBean.setBirthday(et_classmate_birthday.getText().toString());
             classmateBean.setConstellation(et_classmate_constellation.getText().toString());
             classmateBean.setAddress(et_classmate_address.getText().toString());

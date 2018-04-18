@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         ,NotesFragment.OnFragmentInteractionListener
         ,BookFragment.OnFragmentInteractionListener{
     private TextView btn_home,btn_add,btn_my,btn_search,btn_notes;
+    public static MainActivity ma=null;
 
     //这里没有搜索的碎片
     // 搜索的页面不需要显示底部导航栏
@@ -41,31 +42,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     private List<BookBean> bookList = new ArrayList<BookBean>();
     private BookHttpCallback bookCallback;
 
-    public int getBookListSize() {
-        return bookListSize;
-    }
-
-    public void setBookListSize(int bookListSize) {
-        this.bookListSize = bookListSize;
-    }
-
-    public List<BookBean> getBookList() {
-        return bookList;
-    }
-
-    public void setBookList(List<BookBean> bookList) {
-        this.bookList = bookList;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);         //去标题
         setContentView(R.layout.activity_main);
+        ma=this;
 
         myApp=(MyApplication)getApplication();
         userName=myApp.getUserName();
@@ -163,14 +145,24 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 btn_search.setSelected(true);
                 Intent intent=new Intent(MainActivity.this,SearchActivity.class);
                 startActivity(intent);
-                finish();
+
+                //返回时显示首页
+                selectedAll();
+                btn_home.setSelected(true);
+                if(homeFg == null){
+                    homeFg = new HomeFragment();        //如果首页碎片不存在则新建一个
+                    fgTransaction.add(R.id.flContainer,homeFg);
+
+                }
+                else{
+                    fgTransaction.show(homeFg);
+                }
                 break;
-            //添加手账
+            //添加同学录
             case R.id.txv_add:
                 //跳转到添加同学录页面
                 Intent intent1=new Intent(MainActivity.this,AddBookActivity.class);
                 startActivity(intent1);
-                finish();
                 break;
             //点滴记录
             case R.id.txv_notes:
@@ -240,5 +232,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     }
 
+    @Override
+    protected void onResumeFragments() {
+        //加载网络
+        bookCallback=new BookHttpCallback();
+        //加载同学录列表
+        new BookHttpUtils().getAllBookByUserId(userName,bookCallback);
+        super.onResumeFragments();
+    }
 }
 

@@ -34,28 +34,13 @@
             android:layout_marginLeft="12dp">
 
             <TextView
+                android:id="@+id/txv_introduce"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/gong"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/txv_classmate_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/x"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
-                android:layout_marginLeft="5dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pian"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
-                android:layout_marginLeft="5dp"/>
+                android:maxLines="2"
+                android:maxEms="20"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -71,7 +56,7 @@
                 android:id="@+id/txv_setup_book"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableTop="@mipmap/setup_b" />
+                android:drawableTop="@mipmap/setup_b"/>
 
         </LinearLayout>
 

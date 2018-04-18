@@ -17,6 +17,7 @@ public class FragAdapter extends FragmentPagerAdapter {
     /**
      * 构造函数中就把 管理Fragment的List集合传入进来
      * 在这里必须实现只重写getItem(int)和getCount()
+     *
      * @param fragmentManager
      * @param fragmentList
      */
@@ -24,6 +25,7 @@ public class FragAdapter extends FragmentPagerAdapter {
         super(fragmentManager);
         this.fragmentList = fragmentList;
     }
+
     @Override
     public Fragment getItem(int position) {
 
@@ -35,4 +37,10 @@ public class FragAdapter extends FragmentPagerAdapter {
         return fragmentList.size();
     }
 
+
+    @Override
+    public int getItemPosition(Object object) {
+            return POSITION_NONE;
+    }
 }
+
