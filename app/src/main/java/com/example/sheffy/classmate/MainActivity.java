@@ -240,5 +240,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         new BookHttpUtils().getAllBookByUserId(userName,bookCallback);
         super.onResumeFragments();
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+    }
 }
 

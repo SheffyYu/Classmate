@@ -215,6 +215,8 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
         });
     }
 
+
+//********************************以下为自动生成函数*************************************************
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

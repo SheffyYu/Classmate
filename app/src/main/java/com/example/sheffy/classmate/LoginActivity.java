@@ -2,6 +2,7 @@ package com.example.sheffy.classmate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.io.File;
 
 import application.MyApplication;
 import bean.UserBean;
@@ -91,6 +94,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Log.i("userBean", userBean.toString());
                         myApp=(MyApplication)getApplication();
                         myApp.setUserName(userBean.getUserId());
+                        //在手机中创建一个文件夹，用于保存图片文件
+                        //新建一个File，传入文件夹目录
+                        String path=Environment.getExternalStorageDirectory().getPath()+"/com.sheffy.classmate"+"/"+edt_user_name.getText().toString();
+                        File file = new File(path);
+                        myApp.setPath(path);
+                        //判断文件夹是否存在，如果不存在就创建，否则不创建
+                        if (!file.exists()) {
+                            //通过file的mkdirs()方法创建<span style="color:#FF0000;">目录中包含却不存在</span>的文件夹
+                            file.mkdirs();
+                        }
                         //跳转到首页
                         Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                         startActivity(intent);

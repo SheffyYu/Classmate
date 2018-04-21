@@ -46,7 +46,7 @@ public class BookFragment extends Fragment{
         introduce=getArguments().getString("introduce","默认");
     }
 
-//为了传数据，保存数据
+//为了传数据，保存数据，获取主函数中联网的数据
     public static BookFragment newInstance(BookBean bookBean){
         BookFragment bookFragment = new BookFragment();
 
@@ -58,7 +58,7 @@ public class BookFragment extends Fragment{
         return bookFragment;
     }
 
-//UI操作
+    //UI操作
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class BookFragment extends Fragment{
         return view;
     }
 
-//碎片中的一些操作，如点击事件
+    //碎片中的一些操作，如点击事件
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -109,7 +109,7 @@ public class BookFragment extends Fragment{
         ll_book=(LinearLayout)view.findViewById(R.id.ll_book);
     }
 
-
+//********************************以下为自动生成函数*************************************************
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

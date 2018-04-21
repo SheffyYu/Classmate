@@ -1,6 +1,5 @@
 package com.example.sheffy.classmate;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -137,8 +136,8 @@ public class RegistActivity extends AppCompatActivity implements View.OnClickLis
                         public void run() {
                             Toast.makeText(RegistActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
                             //跳转到登录页
-                            Intent intent=new Intent(RegistActivity.this,LoginActivity.class);
-                            startActivity(intent);
+//                            Intent intent=new Intent(RegistActivity.this,LoginActivity.class);
+//                            startActivity(intent);
                             finish();   //结束注册页
                         }
                     });

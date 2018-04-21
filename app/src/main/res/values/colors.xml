@@ -13,4 +13,5 @@
     <color name="btn_color">#1E90FF</color>
     <color name="colorRed">#E80000</color>
     <color name="colorbgDark">#d4202020</color>
+    <color name="colorLightGreen">#FAFEFE</color>
 </resources>

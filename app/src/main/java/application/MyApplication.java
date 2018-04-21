@@ -19,6 +19,15 @@ public class MyApplication extends Application {
     private String introduce;
     private ClassmateBean classmateBean;
     private List<ClassmateBean> allClassmate;
+    private String path;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public List<ClassmateBean> getAllClassmate() {
         return allClassmate;

@@ -39,4 +39,7 @@ public class ServerUrl {
 
     //获取所有同学
     public static String GET_ALL_CLASSMATE_BY_USERID=SERVER_PATH+"/classmateController/getAllClassmateByUserId.action?userId=";
+
+    //修改密码
+    public static String UPDATE_PASSWORD=SERVER_PATH+"/userController/updatePassword.action";
 }
