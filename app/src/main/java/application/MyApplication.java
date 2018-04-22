@@ -20,6 +20,15 @@ public class MyApplication extends Application {
     private ClassmateBean classmateBean;
     private List<ClassmateBean> allClassmate;
     private String path;
+    private String faviconPath;
+
+    public String getFaviconPath() {
+        return faviconPath;
+    }
+
+    public void setFaviconPath(String faviconPath) {
+        this.faviconPath = faviconPath;
+    }
 
     public String getPath() {
         return path;

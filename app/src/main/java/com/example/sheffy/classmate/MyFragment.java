@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -55,9 +56,9 @@ public class MyFragment extends Fragment {
                      txv_feedback,txv_about,txv_version;
     private MyApplication myApp;
     private String userName;
-    private UserBean userBean;
+    private UserBean userBean,postUserBean;
     private  Uri uritempFile;
-    private String fileTempPath;
+    private String faviconPath;
 
     //修改头像功能的数据
     protected static final int CHOOSE_PICTURE = 0;
@@ -74,6 +75,7 @@ public class MyFragment extends Fragment {
         //获取用户名
         myApp=(MyApplication)getActivity().getApplication();
         userName=myApp.getUserName();
+        faviconPath=myApp.getFaviconPath();
     }
 
     //ui操作
@@ -87,6 +89,12 @@ public class MyFragment extends Fragment {
         initView();
         //设置用户名
         txv_user_name_my.setText(userName);
+        //设置头像
+        if(faviconPath!=null){
+            Bitmap bitmap = BitmapFactory.decodeFile(faviconPath);
+            Log.i("MyFragment","setImageToView:"+bitmap);
+            civ_favicon_my.setImageBitmap(bitmap);
+        }
 
         return view;
     }
@@ -254,8 +262,11 @@ public class MyFragment extends Fragment {
         builder.create().show();
     }
 
+    //***********************************************************************************************
+    //照相机功能存在问题，照片可以保存到存储路径里，但却无法跳转到剪切部分，直接回到activity，显示操作失败
+    //主要是小米手机，其他手机暂时还未发现问题
     private void takePicture() {
-        String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
         if (Build.VERSION.SDK_INT >= 23) {
             // 需要申请动态权限
             int check = ContextCompat.checkSelfPermission(getContext(), permissions[0]);
@@ -263,10 +274,12 @@ public class MyFragment extends Fragment {
             if (check != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             }
+
         }
         Intent openCameraIntent = new Intent(
                 MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = new File(myApp.getPath(), "image.jpg");
+        File file = new File(Environment
+                .getExternalStorageDirectory(), "image.jpg");
         Log.e("takePicture: ", file.getPath() );
         //判断是否是AndroidN以及更高的版本
         if (Build.VERSION.SDK_INT >= 24) {
@@ -275,12 +288,14 @@ public class MyFragment extends Fragment {
             tempUri = FileProvider.getUriForFile(getActivity(), "com.example.sheffy.classmate.fileProvider", file);
             Log.e("takePicture: ", tempUri.getPath() );
         } else {
-            tempUri = Uri.fromFile(new File(myApp.getPath(), "image.jpg"));
+            tempUri = Uri.fromFile(new File(Environment
+                    .getExternalStorageDirectory(), "image.jpg"));
         }
         // 指定照片保存路径（SD卡），image.jpg为一个临时文件，每次拍照后这个图片都会被替换
         openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
         startActivityForResult(openCameraIntent, TAKE_PICTURE);
     }
+//**************************************************************************************************
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -296,11 +311,12 @@ public class MyFragment extends Fragment {
                 case CROP_SMALL_PICTURE:
                     if (data != null) {
                         Log.i("onActivityResult: ",uritempFile.getPath());
-                            Bitmap bitmap = BitmapFactory.decodeFile(uritempFile.getPath());
-                            Log.i("MyFragment","setImageToView:"+bitmap);
-                            bitmap = ImageUtils.toRoundBitmap(bitmap); // 这个时候的图片已经被处理成圆形的了
-                            civ_favicon_my.setImageBitmap(bitmap);
-                            uploadPic(bitmap);
+                        Bitmap bitmap = BitmapFactory.decodeFile(uritempFile.getPath());
+                        Log.i("MyFragment","setImageToView:"+bitmap);
+                        bitmap = ImageUtils.toRoundBitmap(bitmap); // 这个时候的图片已经被处理成圆形的了
+                        civ_favicon_my.setImageBitmap(bitmap);
+                        myApp.setFaviconPath(uritempFile.getPath());
+                        uploadPic(bitmap);
                     }
                     break;
             }
@@ -343,9 +359,40 @@ public class MyFragment extends Fragment {
                 .valueOf(System.currentTimeMillis()));
         Log.e("imagePath", imagePath+"");
         if(imagePath != null){
-            // 拿着imagePath上传了
-            // ...
+            // imagePath上传
             Log.d("MyFragment","imagePath:"+imagePath);
+            postUserBean=new UserBean();
+            postUserBean.setUserId(userName);
+            postUserBean.setFavicon(imagePath);
+
+            //转换成 Json 文本
+            Gson gson = new Gson();
+            String json =  gson.toJson(postUserBean);
+            Log.i("json", "postUser: "+json);
+
+            // 提交 json 文本到服务器
+            new HttpUtils().postData(ServerUrl.UPDATE_FAVICON,json,new HttpCallback(){
+                @Override
+                public void onSuccess(Object data) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(),"上传头像成功",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(String message) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(),"注册失败,网络错误",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+
         }
     }
 
@@ -354,8 +401,8 @@ public class MyFragment extends Fragment {
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-        } else {
+        }
+        else {
             // 没有获取 到权限，从新请求，或者关闭app
             Toast.makeText(getActivity(), "需要存储权限", Toast.LENGTH_SHORT).show();
         }
@@ -405,4 +452,5 @@ public class MyFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }

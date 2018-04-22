@@ -8,6 +8,8 @@ package com.example.sheffy.classmate;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +32,7 @@ import java.util.List;
 import adapter.FragAdapter;
 import application.MyApplication;
 import bean.BookBean;
+import circleimageview.CircleImageView;
 
 
 /**
@@ -45,6 +48,7 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
 //    private BookFragment bookFragment;
     private TextView txv_user_name_home;
     private View view;
+    private CircleImageView civ_favicon_home;
 
     private ViewPager viewPager;
     private ArrayList<Fragment> fragmentList;
@@ -54,7 +58,7 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
     private int pointMoveDistance;
 
     //用户名
-    private String userName;
+    private String userName,faviconPath;
     private int bookListSize;
     private List<BookBean> bookList;
     private MyApplication myApp;
@@ -74,16 +78,21 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
-
-        //设置用户名
         txv_user_name_home=(TextView) view.findViewById(R.id.txv_user_name_home);
-        txv_user_name_home.setText(userName);
-
+        civ_favicon_home=(CircleImageView)view.findViewById(R.id.user_favicon_home);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         //红点的线性布局  (父)
         ll_container = (LinearLayout) view.findViewById(R.id.ll_container);
         //红点
         iv_red_piont = (ImageView) view.findViewById(R.id.iv_red_piont);
+        ////设置用户名
+        txv_user_name_home.setText(userName);
+        //设置头像
+        if(faviconPath!=null){
+            Bitmap bitmap = BitmapFactory.decodeFile(faviconPath);
+            Log.i("MyFragment","setImageToView:"+bitmap);
+            civ_favicon_home.setImageBitmap(bitmap);
+        }
 
         initData();
         initPointData();
@@ -105,6 +114,13 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
             userName=myApp.getUserName();
             bookListSize=myApp.getBookListSize();
             bookList=myApp.getBookBeanList();
+            faviconPath=myApp.getFaviconPath();
+            //设置头像
+            if(faviconPath!=null){
+                Bitmap bitmap = BitmapFactory.decodeFile(faviconPath);
+                Log.i("MyFragment","setImageToView:"+bitmap);
+                civ_favicon_home.setImageBitmap(bitmap);
+            }
             //清空小圆点，为了避免小圆点重复添加或者多余添加
             ll_container.removeAllViews();
             //刷新碎片和小圆点
@@ -129,6 +145,7 @@ public class HomeFragment extends Fragment implements BookFragment.OnFragmentInt
         userName=myApp.getUserName();
         bookListSize=myApp.getBookListSize();
         bookList=myApp.getBookBeanList();
+        faviconPath=myApp.getFaviconPath();
     }
 
     //初始化碎片

@@ -105,6 +105,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         btn_my.setSelected(false);
     }
 
+    public void selectMy(){
+        btn_my.setSelected(true);
+    }
+
     //隐藏所有的碎片
     public void hideAllFragment(FragmentTransaction transaction){
         if(homeFg != null){
@@ -221,6 +225,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                     initView();
                     //默认启动时现实首页
                     initData();
+
+                    if(btn_my.isSelected()){
+                        selectedAll();
+                        btn_my.setSelected(true);
+                    }
+                    if(btn_notes.isSelected()){
+                        selectedAll();
+                        btn_notes.setSelected(true);
+                    }
                 }
             });
         }
@@ -243,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
     }
 }
 

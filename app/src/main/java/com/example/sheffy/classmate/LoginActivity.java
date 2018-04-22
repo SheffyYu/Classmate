@@ -94,6 +94,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Log.i("userBean", userBean.toString());
                         myApp=(MyApplication)getApplication();
                         myApp.setUserName(userBean.getUserId());
+                        myApp.setFaviconPath(userBean.getFavicon());
                         //在手机中创建一个文件夹，用于保存图片文件
                         //新建一个File，传入文件夹目录
                         String path=Environment.getExternalStorageDirectory().getPath()+"/com.sheffy.classmate"+"/"+edt_user_name.getText().toString();

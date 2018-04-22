@@ -42,4 +42,7 @@ public class ServerUrl {
 
     //修改密码
     public static String UPDATE_PASSWORD=SERVER_PATH+"/userController/updatePassword.action";
+
+    //修改头像
+    public static String UPDATE_FAVICON=SERVER_PATH+"/userController/updateFavicon.action";
 }

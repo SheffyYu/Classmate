@@ -7,6 +7,15 @@ package bean;
 public class UserBean {
     private String userId;
     private String password;
+    private String favicon;
+
+    public String getFavicon() {
+        return favicon;
+    }
+
+    public void setFavicon(String favicon) {
+        this.favicon = favicon;
+    }
 
     public String getUserId() {
         return userId;
@@ -26,6 +35,6 @@ public class UserBean {
 
     @Override
     public String toString() {
-        return "UserBean [userId=" + userId + ", password=" + password + "]";
+        return "UserBean [userId=" + userId + ", password=" + password + ",favicon="+favicon+"]";
     }
 }
