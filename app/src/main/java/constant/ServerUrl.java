@@ -6,8 +6,8 @@ package constant;
 
 public class ServerUrl {
     //服务器IP地址
-    public static String IP = "192.168.1.103";
-//    public static String IP = "192.168.1.105";
+//    public static String IP = "192.168.1.103";
+    public static String IP = "192.168.1.104";
     public static String SERVER_PATH = "http://" + IP + ":8080";
 
     //获取用户名和密码
@@ -45,4 +45,16 @@ public class ServerUrl {
 
     //修改头像
     public static String UPDATE_FAVICON=SERVER_PATH+"/userController/updateFavicon.action";
+
+    //修改同学录名称
+    public static String PUT_CHANGE_BOOK_NAME=SERVER_PATH+"/bookController/updateBookName.action";
+
+    //修改同学录简介
+    public static String PUT_CHANGE_INTRODUCE=SERVER_PATH+"/bookController/updateIntroduce.action";
+
+    //修改封面
+    public static String PUT_CHANGE_FACE=SERVER_PATH+"/bookController/updateFace.action";
+
+    //修改背景
+    public static String PUT_CHANGE_PAGER=SERVER_PATH+"/bookController/updatePager.action";
 }

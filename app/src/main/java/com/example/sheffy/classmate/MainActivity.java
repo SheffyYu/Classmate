@@ -105,9 +105,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         btn_my.setSelected(false);
     }
 
-    public void selectMy(){
-        btn_my.setSelected(true);
-    }
 
     //隐藏所有的碎片
     public void hideAllFragment(FragmentTransaction transaction){
@@ -226,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                     //默认启动时现实首页
                     initData();
 
+                    //这里为了避免从文件管理返回时，出现首页与我的以及点滴同时选中的情况，做了一些处理
                     if(btn_my.isSelected()){
                         selectedAll();
                         btn_my.setSelected(true);
@@ -245,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     }
 
+    //刷新首页内容
     @Override
     protected void onResumeFragments() {
         //加载网络

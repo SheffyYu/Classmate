@@ -5,4 +5,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="show_text">18sp</dimen>
     <dimen name="text_my">20sp</dimen>
+    <dimen name="showClassmateLeft">20dp</dimen>
 </resources>

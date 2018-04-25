@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,8 +27,10 @@ public class ShowClassmateActivity extends AppCompatActivity {
                      txv_name,txv_sex,txv_date,txv_cons,txv_blood,
                      txv_phone,txv_qq,txv_address,txv_hobby,txv_leave,txv_your;
     private Toolbar tb_title_show_c;
+    private LinearLayout llContent;
     private ClassmateBean classmateBean;
     private MyApplication myApp;
+    private int pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +41,14 @@ public class ShowClassmateActivity extends AppCompatActivity {
         //获取本条信息
         myApp=(MyApplication)getApplication();
         classmateBean=myApp.getClassmateBean();
+        pager=myApp.getPager();
 
         //初始化组件
         initView();
 
         //使用自定义标题
         txv_title.setText(classmateBean.getBookId());
+        setSkinBg();
         setSupportActionBar(tb_title_show_c);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
@@ -73,7 +78,23 @@ public class ShowClassmateActivity extends AppCompatActivity {
         txv_hobby=(TextView)findViewById(R.id.txv_show_classmate_hobby);
         txv_leave=(TextView)findViewById(R.id.txv_show_classmate_leave);
         txv_your=(TextView)findViewById(R.id.txv_show_classmate_your);
+        llContent=(LinearLayout)findViewById(R.id.activity_show_classmate);
 
+    }
+
+    //设置背景
+    protected void setSkinBg(){
+        switch (pager){
+            case 0:
+                llContent.setBackgroundResource(R.drawable.classmate_bg2);
+                break;
+            case 1:
+                llContent.setBackgroundResource(R.drawable.classmate_bg1);
+                break;
+            case 2:
+                llContent.setBackgroundResource(R.drawable.classmate_bg3);
+                break;
+        }
     }
 
     //初始化数据

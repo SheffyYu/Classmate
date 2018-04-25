@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_pop_setup"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:paddingLeft="50dp"
+    android:paddingRight="50dp"
+    android:paddingTop="18dp"
+    android:paddingBottom="18dp"
+    android:background="@drawable/square">
+
+    <TextView
+        android:id="@+id/txv_pop_change_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/pop_change_name"
+        android:drawablePadding="15dp"
+        android:gravity="center"
+        android:text="修改名称"
+        android:textSize="20sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/txv_pop_change_introduce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/pop_change_introduce"
+        android:drawablePadding="15dp"
+        android:gravity="center"
+        android:text="修改简介"
+        android:textSize="20sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/txv_pop_change_face"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/pop_change_face"
+        android:drawablePadding="15dp"
+        android:gravity="center"
+        android:text="封面皮肤"
+        android:textSize="20sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/txv_pop_change_pager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/pop_change_pager"
+        android:drawablePadding="15dp"
+        android:gravity="center"
+        android:text="内置背景"
+        android:textSize="20sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
+</LinearLayout>

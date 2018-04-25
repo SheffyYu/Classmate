@@ -57,12 +57,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -70,7 +70,7 @@
                     android:text="@string/classmateName"
                     android:textColor="@color/white"
                     android:textSize="@dimen/show_text"
-                    android:layout_marginLeft="15dp"/>
+                    android:layout_marginLeft="@dimen/showClassmateLeft"/>
 
                 <TextView
                     android:id="@+id/txv_show_classmate_name"
@@ -93,7 +93,7 @@
                     android:text="@string/sex"
                     android:textColor="@color/white"
                     android:textSize="@dimen/show_text"
-                    android:layout_marginLeft="15dp"/>
+                    android:layout_marginLeft="@dimen/showClassmateLeft"/>
 
                 <TextView
                     android:id="@+id/txv_show_classmate_sex"
@@ -116,7 +116,7 @@
                     android:text="@string/birthday"
                     android:textColor="@color/white"
                     android:textSize="@dimen/show_text"
-                    android:layout_marginLeft="15dp"/>
+                    android:layout_marginLeft="@dimen/showClassmateLeft"/>
 
                 <TextView
                     android:id="@+id/txv_show_classmate_birthday"
@@ -139,7 +139,7 @@
                     android:text="@string/constellation"
                     android:textColor="@color/white"
                     android:textSize="@dimen/show_text"
-                    android:layout_marginLeft="15dp"/>
+                    android:layout_marginLeft="@dimen/showClassmateLeft"/>
 
                 <TextView
                     android:id="@+id/txv_show_classmate_constellation"
@@ -162,7 +162,7 @@
                     android:text="@string/blood"
                     android:textColor="@color/white"
                     android:textSize="@dimen/show_text"
-                    android:layout_marginLeft="15dp"/>
+                    android:layout_marginLeft="@dimen/showClassmateLeft"/>
 
                 <TextView
                     android:id="@+id/txv_show_classmate_blood"
@@ -185,7 +185,7 @@
                     android:text="@string/phone"
                     android:textColor="@color/white"
                     android:textSize="@dimen/show_text"
-                    android:layout_marginLeft="15dp"/>
+                    android:layout_marginLeft="@dimen/showClassmateLeft"/>
 
                 <TextView
                     android:id="@+id/txv_show_classmate_phone"
@@ -209,8 +209,7 @@
                     android:text="@string/qq"
                     android:textColor="@color/white"
                     android:textSize="@dimen/show_text"
-                    android:layout_marginLeft="15dp"/>
-
+                    android:layout_marginLeft="@dimen/showClassmateLeft"/>
                 <TextView
                     android:id="@+id/txv_show_classmate_qq"
                     android:layout_width="wrap_content"
@@ -232,7 +231,7 @@
                     android:text="@string/address"
                     android:textColor="@color/white"
                     android:textSize="@dimen/show_text"
-                    android:layout_marginLeft="15dp"/>
+                    android:layout_marginLeft="@dimen/showClassmateLeft"/>
 
                 <TextView
                     android:id="@+id/txv_show_classmate_address"
@@ -257,7 +256,7 @@
                     android:text="@string/hobby"
                     android:textColor="@color/white"
                     android:textSize="@dimen/show_text"
-                    android:layout_marginLeft="15dp"/>
+                    android:layout_marginLeft="@dimen/showClassmateLeft"/>
 
                 <TextView
                     android:id="@+id/txv_show_classmate_hobby"
@@ -282,7 +281,7 @@
                     android:text="@string/leaveWord"
                     android:textColor="@color/white"
                     android:textSize="@dimen/show_text"
-                    android:layout_marginLeft="15dp"/>
+                    android:layout_marginLeft="@dimen/showClassmateLeft"/>
 
                 <TextView
                     android:id="@+id/txv_show_classmate_leave"
@@ -307,7 +306,7 @@
                     android:text="@string/yourWord"
                     android:textColor="@color/white"
                     android:textSize="@dimen/show_text"
-                    android:layout_marginLeft="15dp"/>
+                    android:layout_marginLeft="@dimen/showClassmateLeft"/>
 
                 <TextView
                     android:id="@+id/txv_show_classmate_your"

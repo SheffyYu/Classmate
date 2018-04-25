@@ -14,6 +14,7 @@ import bean.ClassmateBean;
 public class MyApplication extends Application {
     private String userName;
     private String booknName;
+    private int pager;
     private List<BookBean> bookBeanList;
     private int bookListSize;
     private String introduce;
@@ -21,6 +22,14 @@ public class MyApplication extends Application {
     private List<ClassmateBean> allClassmate;
     private String path;
     private String faviconPath;
+
+    public int getPager() {
+        return pager;
+    }
+
+    public void setPager(int pager) {
+        this.pager = pager;
+    }
 
     public String getFaviconPath() {
         return faviconPath;
