@@ -53,7 +53,7 @@ public class MyFragment extends Fragment {
     private View view;
     private CircleImageView civ_favicon_my;
     private TextView txv_user_name_my,txv_change_favicon,txv_change_password,
-                     txv_feedback,txv_about,txv_version;
+                     txv_feedback,txv_about,txv_version,txv_logout;
     private MyApplication myApp;
     private String userName;
     private UserBean userBean,postUserBean;
@@ -170,6 +170,31 @@ public class MyFragment extends Fragment {
                 dialog.show();
             }
         });
+
+        //注销
+        txv_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //弹出对话框
+                AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                        .setTitle("是否退出登录？")//设置对话框的标题
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent=new Intent(getActivity(),LoginActivity.class);
+                                startActivity(intent);
+                                getActivity().finish();
+                            }
+                        }).create();
+                dialog.show();
+            }
+        });
     }
 
     //初始化组件
@@ -181,6 +206,7 @@ public class MyFragment extends Fragment {
         txv_about=(TextView)view.findViewById(R.id.txv_about);
         txv_feedback=(TextView)view.findViewById(R.id.txv_feedback);
         txv_version=(TextView)view.findViewById(R.id.txv_version);
+        txv_logout=(TextView)view.findViewById(R.id.txv_logout);
     }
 
     //修改密码

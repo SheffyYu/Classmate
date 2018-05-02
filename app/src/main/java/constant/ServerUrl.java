@@ -57,4 +57,7 @@ public class ServerUrl {
 
     //修改背景
     public static String PUT_CHANGE_PAGER=SERVER_PATH+"/bookController/updatePager.action";
+
+    //获取所有记录
+    public static String GET_ALL_NOTES=SERVER_PATH+"/notesController/getAllNotes.action?userId=";
 }

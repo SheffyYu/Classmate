@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_popup_add"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:paddingBottom="40dp"
+    android:paddingTop="40dp"
+    android:paddingRight="40dp"
+    android:paddingLeft="40dp"
+    android:background="@drawable/square">
+
+    <TextView
+        android:id="@+id/txv_add_book"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@mipmap/add_book"
+        android:textSize="18sp"
+        android:drawablePadding="10dp"
+        android:text="添加同学录"/>
+
+    <TextView
+        android:id="@+id/txv_add_notes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@mipmap/add_notes"
+        android:textSize="18sp"
+        android:drawablePadding="10dp"
+        android:text="添加记录"
+        android:layout_marginLeft="50dp"/>
+
+</LinearLayout>

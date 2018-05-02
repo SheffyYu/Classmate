@@ -85,6 +85,26 @@
         </LinearLayout>
 
 
+        <!--记住密码-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/check_pass"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="记住密码"
+                android:textSize="18sp"/>
+        </LinearLayout>
+
+
+
+
         <Button
             android:id="@+id/btn_login"
             android:layout_width="250dp"

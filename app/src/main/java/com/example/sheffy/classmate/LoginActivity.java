@@ -1,13 +1,16 @@
 package com.example.sheffy.classmate;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,10 +27,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText edt_password;
     private Button btn_login;
     private Button btn_regist_login;
+    private CheckBox cb_pass;
 
     private String userIdEdt;
     private String passwordEdt;
 
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
     private UserHttpCallback userCallback;
     private UserBean userBean;
     private MyApplication myApp;
@@ -40,6 +46,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         initView();
 
+        //是否记住登陆信息
+        pref= PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isRember=pref.getBoolean("remember_password",false);
+        if(isRember){
+            //将账号和密码设置到文本框
+            String user=pref.getString("user_name","");
+            String password=pref.getString("password","");
+            edt_user_name.setText(user);
+            edt_password.setText(password);
+            cb_pass.setChecked(true);
+        }
+
         //加载网络
         userCallback=new UserHttpCallback();
 
@@ -51,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         edt_password=(EditText)findViewById(R.id.edt_password);
         btn_login=(Button)findViewById(R.id.btn_login);
         btn_regist_login=(Button)findViewById(R.id.btn_regist_login);
+        cb_pass=(CheckBox)findViewById(R.id.check_pass);
 
         btn_login.setOnClickListener(this);
         btn_regist_login.setOnClickListener(this);
@@ -105,6 +124,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             //通过file的mkdirs()方法创建<span style="color:#FF0000;">目录中包含却不存在</span>的文件夹
                             file.mkdirs();
                         }
+
+                        //记住账号和密码
+                        editor=pref.edit();
+                        if (cb_pass.isChecked()){
+                            editor.putBoolean("remember_password",true);
+                            editor.putString("user_name",userIdEdt);
+                            editor.putString("password",passwordEdt);
+                        }
+                        else {
+                            editor.clear();
+                        }
+                        editor.apply();
+
                         //跳转到首页
                         Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                         startActivity(intent);

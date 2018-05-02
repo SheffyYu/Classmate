@@ -7,10 +7,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,15 +24,17 @@ import java.util.List;
 
 import application.MyApplication;
 import bean.BookBean;
+import bean.NotesBean;
 import http.BookHttpUtils;
 import http.HttpCallback;
+import http.NotesHttpUtils;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener
         ,HomeFragment.OnFragmentInteractionListener
         ,MyFragment.OnFragmentInteractionListener
         ,NotesFragment.OnFragmentInteractionListener
         ,BookFragment.OnFragmentInteractionListener{
-    private TextView btn_home,btn_add,btn_my,btn_search,btn_notes;
+    private TextView btn_home,btn_add,btn_my,btn_search,btn_notes,txv_add_book,txv_add_notes;
     public static MainActivity ma=null;
 
     //这里没有搜索的碎片
@@ -36,11 +44,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     private MyFragment myFg;
     private NotesFragment notesFg;
 
+    private PopupWindow mPopupWindow;
+
     private MyApplication myApp;
     private int bookListSize;
     private String userName;
     private List<BookBean> bookList = new ArrayList<BookBean>();
+    private List<NotesBean> notesList=new ArrayList<NotesBean>();
     private BookHttpCallback bookCallback;
+    private NotesHttpBackcall notesHttpBackcall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     }
 
-
 //    初始化事件绑定
     private void initView(){
         btn_home=(TextView) findViewById(R.id.txv_home);
@@ -68,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         btn_search=(TextView) findViewById(R.id.txv_search);
         btn_my=(TextView) findViewById(R.id.txv_my);
         btn_add=(TextView) findViewById(R.id.txv_add);
+        txv_add_book=(TextView) findViewById(R.id.txv_add_book);
+        txv_add_notes=(TextView) findViewById(R.id.txv_add_notes);
         ly_content = (FrameLayout) findViewById(R.id.flContainer);
 
         //绑定点击事件
@@ -77,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         btn_notes.setOnClickListener(this);
         btn_add.setOnClickListener(this);
     }
-
 
     //初始化数据，默认显示首页
     public void initData(){
@@ -96,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     }
 
-
     //重置所有文本的选中状态
     public void selectedAll(){
         btn_home.setSelected(false);
@@ -104,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         btn_notes.setSelected(false);
         btn_my.setSelected(false);
     }
-
 
     //隐藏所有的碎片
     public void hideAllFragment(FragmentTransaction transaction){
@@ -119,16 +129,83 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         }
     }
 
+    //弹出框
+    private void showPopWindow(View parentView, int convertViewResource) {
+        //创建一个popUpWindow
+        View popLayout = LayoutInflater.from(MainActivity.this).inflate(convertViewResource,null);
+        //给popUpWindow内的空间设置点击事件his
+        //添加同学录
+        popLayout.findViewById(R.id.txv_add_book).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mPopupWindow.isShowing()) {
+                    mPopupWindow.dismiss();
+                }
+                Intent intent=new Intent(MainActivity.this,AddBookActivity.class);
+                startActivity(intent);
+            }
+        });
+        //添加记录
+        popLayout.findViewById(R.id.txv_add_notes).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mPopupWindow.isShowing()) {
+                    mPopupWindow.dismiss();
+                }
+                Intent intent=new Intent(MainActivity.this,AddBookActivity.class);
+                startActivity(intent);
+            }
+        });
+        if (mPopupWindow == null) {
+            //实例化一个popupWindow
+            mPopupWindow =
+                    new PopupWindow(popLayout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            //产生背景变暗效果
+            WindowManager.LayoutParams lp = getWindow().getAttributes();
+            lp.alpha = 0.4f;
+            getWindow().setAttributes(lp);
+            //点击外面popupWindow消失
+            mPopupWindow.setOutsideTouchable(true);
+            //popupWindow获取焦点
+            mPopupWindow.setFocusable(true);
+            //刷新popupWindow
+            //popupWindow.update();
+
+            //设置popupWindow消失时的监听
+            mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                //在dismiss中恢复透明度
+                public void onDismiss() {
+                    WindowManager.LayoutParams lp = getWindow().getAttributes();
+                    lp.alpha = 1f;
+                    getWindow().setAttributes(lp);
+                }
+            });
+            mPopupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
+        } else {
+            //如果popupWindow正在显示，接下来隐藏
+            if (mPopupWindow.isShowing()) {
+                mPopupWindow.dismiss();
+            } else {
+                //产生背景变暗效果
+                WindowManager.LayoutParams lp = getWindow().getAttributes();
+                lp.alpha = 0.4f;
+                getWindow().setAttributes(lp);
+                mPopupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
+            }
+        }
+    }
+
 
     public void onClick(View v){
 
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fgTransaction=fragmentManager.beginTransaction();
-        hideAllFragment(fgTransaction);
+//        hideAllFragment(fgTransaction);
 
         switch (v.getId()){
             //首页
             case R.id.txv_home:
+                hideAllFragment(fgTransaction);
                 selectedAll();
                 btn_home.setSelected(true);
                 if(homeFg == null){
@@ -142,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 break;
             //搜索
             case R.id.txv_search:
+                hideAllFragment(fgTransaction);
                 selectedAll();
                 btn_search.setSelected(true);
                 Intent intent=new Intent(MainActivity.this,SearchActivity.class);
@@ -161,24 +239,21 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 break;
             //添加同学录
             case R.id.txv_add:
-                //跳转到添加同学录页面
-                Intent intent1=new Intent(MainActivity.this,AddBookActivity.class);
-                startActivity(intent1);
+                showPopWindow(v,R.layout.layout_popup_add);
                 break;
             //点滴记录
             case R.id.txv_notes:
+                hideAllFragment(fgTransaction);
                 selectedAll();
                 btn_notes.setSelected(true);
-                if(notesFg == null){
-                    notesFg = new NotesFragment();        //如果点滴记录碎片不存在则新建一个
-                    fgTransaction.add(R.id.flContainer,notesFg);
-                }
-                else{
-                    fgTransaction.show(notesFg);
-                }
+
+                //联网
+                notesHttpBackcall=new NotesHttpBackcall();
+                new NotesHttpUtils().getAllNotes(userName,notesHttpBackcall);
                 break;
             //我的
             case R.id.txv_my:
+                hideAllFragment(fgTransaction);
                 selectedAll();
                 btn_my.setSelected(true);
                 if(myFg == null){
@@ -243,6 +318,42 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
     }
 
+    class NotesHttpBackcall implements HttpCallback{
+        @Override
+        public void onSuccess(Object data){
+            //获取同学录列表
+            notesList=(List<NotesBean>)data;
+            Log.i("notesList", notesList.toString());
+            int notesListSize=notesList.size();
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    FragmentManager fragmentManager=getSupportFragmentManager();
+                    FragmentTransaction fgTransaction=fragmentManager.beginTransaction();
+                    // 保存数据
+                    myApp=(MyApplication)getApplication();
+                    myApp.setNotesBeanList(notesList);
+
+                    //显示碎片
+                    if(notesFg == null){
+                        notesFg = new NotesFragment();        //如果点滴记录碎片不存在则新建一个
+                        fgTransaction.add(R.id.flContainer,notesFg);
+                    }
+                    else{
+                        fgTransaction.show(notesFg);
+                    }
+                    fgTransaction.commit();
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(String message){
+            Log.i("notesBean", "网络加载错误");
+        }
+    }
+
     //刷新首页内容
     @Override
     protected void onResumeFragments() {
@@ -251,6 +362,20 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         //加载同学录列表
         new BookHttpUtils().getAllBookByUserId(userName,bookCallback);
         super.onResumeFragments();
+    }
+
+    //点击返回键返回桌面而不是退出程序
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent home = new Intent(Intent.ACTION_MAIN);
+            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            home.addCategory(Intent.CATEGORY_HOME);
+            startActivity(home);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

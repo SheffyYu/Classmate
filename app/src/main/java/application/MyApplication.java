@@ -6,6 +6,7 @@ import java.util.List;
 
 import bean.BookBean;
 import bean.ClassmateBean;
+import bean.NotesBean;
 
 /**
  * Created by Sheffy on 2018/4/11.
@@ -20,8 +21,18 @@ public class MyApplication extends Application {
     private String introduce;
     private ClassmateBean classmateBean;
     private List<ClassmateBean> allClassmate;
+    private List<NotesBean> notesBeanList;
     private String path;
     private String faviconPath;
+    private NotesBean notesBean;
+
+    public NotesBean getNotesBean() {
+        return notesBean;
+    }
+
+    public void setNotesBean(NotesBean notesBean) {
+        this.notesBean = notesBean;
+    }
 
     public int getPager() {
         return pager;
@@ -101,6 +112,14 @@ public class MyApplication extends Application {
 
     public void setClassmateBean(ClassmateBean classmateBean) {
         this.classmateBean = classmateBean;
+    }
+
+    public List<NotesBean> getNotesBeanList() {
+        return notesBeanList;
+    }
+
+    public void setNotesBeanList(List<NotesBean> notesBeanList) {
+        this.notesBeanList = notesBeanList;
     }
 
     @Override
