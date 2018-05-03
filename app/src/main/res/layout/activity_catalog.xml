@@ -5,7 +5,6 @@
     android:id="@+id/activity_catalog"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBule"
     tools:context="com.example.sheffy.classmate.CatalogActivity">
 
     <android.support.v7.widget.Toolbar

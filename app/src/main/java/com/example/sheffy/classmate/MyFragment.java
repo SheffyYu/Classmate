@@ -367,8 +367,8 @@ public class MyFragment extends Fragment {
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
         // outputX outputY 是裁剪图片宽高
-        intent.putExtra("outputX", 60);
-        intent.putExtra("outputY", 60);
+        intent.putExtra("outputX", 160);
+        intent.putExtra("outputY", 160);
         uritempFile = Uri.parse("file://" + "/" + myApp.getPath() + "/" + "small.jpg");
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uritempFile);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());

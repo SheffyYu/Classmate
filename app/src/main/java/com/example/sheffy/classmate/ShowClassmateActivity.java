@@ -41,8 +41,12 @@ public class ShowClassmateActivity extends AppCompatActivity {
         //获取本条信息
         myApp=(MyApplication)getApplication();
         classmateBean=myApp.getClassmateBean();
-        pager=myApp.getPager();
-
+        String bookName=classmateBean.getBookId();
+        for(int i=0;i<myApp.getBookListSize();i++){
+            if(bookName.equals(myApp.getBookBeanList().get(i).getBookId())){
+                pager=myApp.getBookBeanList().get(i).getPager();
+            }
+        }
         //初始化组件
         initView();
 
@@ -94,6 +98,8 @@ public class ShowClassmateActivity extends AppCompatActivity {
             case 2:
                 llContent.setBackgroundResource(R.drawable.classmate_bg3);
                 break;
+            case 3:
+                llContent.setBackgroundResource(R.drawable.classmate_bg4);
         }
     }
 

@@ -2,9 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="10dp"
     tools:context="com.example.sheffy.classmate.NotesFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -18,7 +15,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_list_note"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp">
 
     </android.support.v7.widget.RecyclerView>
 

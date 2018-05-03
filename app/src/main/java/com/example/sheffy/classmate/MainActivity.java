@@ -24,10 +24,8 @@ import java.util.List;
 
 import application.MyApplication;
 import bean.BookBean;
-import bean.NotesBean;
 import http.BookHttpUtils;
 import http.HttpCallback;
-import http.NotesHttpUtils;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener
         ,HomeFragment.OnFragmentInteractionListener
@@ -50,9 +48,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     private int bookListSize;
     private String userName;
     private List<BookBean> bookList = new ArrayList<BookBean>();
-    private List<NotesBean> notesList=new ArrayList<NotesBean>();
     private BookHttpCallback bookCallback;
-    private NotesHttpBackcall notesHttpBackcall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 if (mPopupWindow.isShowing()) {
                     mPopupWindow.dismiss();
                 }
-                Intent intent=new Intent(MainActivity.this,AddBookActivity.class);
+                Intent intent=new Intent(MainActivity.this,AddNotesActivity.class);
                 startActivity(intent);
             }
         });
@@ -200,7 +196,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
 
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fgTransaction=fragmentManager.beginTransaction();
-//        hideAllFragment(fgTransaction);
 
         switch (v.getId()){
             //首页
@@ -243,13 +238,20 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 break;
             //点滴记录
             case R.id.txv_notes:
-                hideAllFragment(fgTransaction);
                 selectedAll();
                 btn_notes.setSelected(true);
 
-                //联网
-                notesHttpBackcall=new NotesHttpBackcall();
-                new NotesHttpUtils().getAllNotes(userName,notesHttpBackcall);
+                hideAllFragment(fgTransaction);
+                // 保存数据
+
+                //显示碎片
+                if(notesFg == null){
+                    notesFg = new NotesFragment();        //如果点滴记录碎片不存在则新建一个
+                    fgTransaction.add(R.id.flContainer,notesFg);
+                }
+                else{
+                    fgTransaction.show(notesFg);
+                }
                 break;
             //我的
             case R.id.txv_my:
@@ -306,6 +308,19 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                     if(btn_notes.isSelected()){
                         selectedAll();
                         btn_notes.setSelected(true);
+                        FragmentManager fragmentManager=getSupportFragmentManager();
+                        FragmentTransaction fgTransaction=fragmentManager.beginTransaction();
+                        hideAllFragment(fgTransaction);
+
+                        //显示碎片
+                        if(notesFg == null){
+                            notesFg = new NotesFragment();        //如果点滴记录碎片不存在则新建一个
+                            fgTransaction.add(R.id.flContainer,notesFg);
+                        }
+                        else{
+                            fgTransaction.show(notesFg);
+                        }
+                        fgTransaction.commit();
                     }
                 }
             });
@@ -316,42 +331,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
             Log.i("bookBean", "网络加载错误");
         }
 
-    }
-
-    class NotesHttpBackcall implements HttpCallback{
-        @Override
-        public void onSuccess(Object data){
-            //获取同学录列表
-            notesList=(List<NotesBean>)data;
-            Log.i("notesList", notesList.toString());
-            int notesListSize=notesList.size();
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    FragmentManager fragmentManager=getSupportFragmentManager();
-                    FragmentTransaction fgTransaction=fragmentManager.beginTransaction();
-                    // 保存数据
-                    myApp=(MyApplication)getApplication();
-                    myApp.setNotesBeanList(notesList);
-
-                    //显示碎片
-                    if(notesFg == null){
-                        notesFg = new NotesFragment();        //如果点滴记录碎片不存在则新建一个
-                        fgTransaction.add(R.id.flContainer,notesFg);
-                    }
-                    else{
-                        fgTransaction.show(notesFg);
-                    }
-                    fgTransaction.commit();
-                }
-            });
-        }
-
-        @Override
-        public void onFailure(String message){
-            Log.i("notesBean", "网络加载错误");
-        }
     }
 
     //刷新首页内容

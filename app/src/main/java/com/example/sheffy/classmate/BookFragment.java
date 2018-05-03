@@ -51,7 +51,7 @@ public class BookFragment extends Fragment{
     private BookBean bookBean;
     private int face,pager,faceChange,pagerChange;
     private final String[] itemsFace=new String[]{"For rest","The song of sea","Bird and castle"};
-    private final String[] itemsPager=new String[]{"Pandora's box","The plant","The imagination of space"};
+    private final String[] itemsPager=new String[]{"Pandora's box","Little Cabin in the wood","The imagination of space","The flower"};
     public BookFragment() {
         // Required empty public constructor
     }

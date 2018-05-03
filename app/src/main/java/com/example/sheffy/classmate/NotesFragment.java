@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,8 @@ import java.util.List;
 import adapter.NotesAdapter;
 import application.MyApplication;
 import bean.NotesBean;
-import circleimageview.SpaceItemDecoration;
+import http.HttpCallback;
+import http.NotesHttpUtils;
 
 
 /**
@@ -36,6 +38,8 @@ public class NotesFragment extends Fragment {
     private MyApplication myApp;
     private String userName;
     private List<NotesBean> notesBeanList=new ArrayList<NotesBean>();
+    private List<NotesBean> notesList=new ArrayList<NotesBean>();
+    private NotesHttpBackcall notesHttpBackcall;
 
     public NotesFragment() {}
 
@@ -47,7 +51,10 @@ public class NotesFragment extends Fragment {
         //获取用户名
         myApp=(MyApplication)getActivity().getApplication();
         userName=myApp.getUserName();
-        notesBeanList=myApp.getNotesBeanList();
+
+        //联网
+        notesHttpBackcall=new NotesHttpBackcall();
+        new NotesHttpUtils().getAllNotes(userName,notesHttpBackcall);
     }
 
     //UI操作
@@ -55,16 +62,7 @@ public class NotesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_notes, container, false);
-
-        //初始化控件
-        initView();
-
-        //当记录为空时
-        if (notesBeanList.size()==0){
-            txv_blank.setText("还没有任何回忆哦~");
-        }
-
-            return view;
+        return view;
     }
 
     //初始化控件
@@ -75,8 +73,6 @@ public class NotesFragment extends Fragment {
         linearLayoutManager=new LinearLayoutManager(getContext());
         notesAdapter=new NotesAdapter(notesBeanList);
         rv_list_notes.setLayoutManager(linearLayoutManager);
-        //设置item间距，30dp
-        rv_list_notes.addItemDecoration(new SpaceItemDecoration(0,20));
         rv_list_notes.setAdapter(notesAdapter);
     }
 
@@ -86,7 +82,43 @@ public class NotesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            //联网,刷新数据
+            notesHttpBackcall=new NotesHttpBackcall();
+            new NotesHttpUtils().getAllNotes(userName,notesHttpBackcall);
+        }
+    }
 
+    class NotesHttpBackcall implements HttpCallback {
+        @Override
+        public void onSuccess(Object data){
+            //获取同学录列表
+            notesList=(List<NotesBean>)data;
+            notesBeanList=notesList;
+            Log.i("notesList", notesList.toString());
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //初始化控件
+                    initView();
+
+                    //当记录为空时
+                    if (notesBeanList.size()==0){
+                        txv_blank.setText("还没有任何回忆哦~");
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onFailure(String message){
+            Log.i("notesBean", "网络加载错误");
+        }
+    }
 
     /**
      * This interface must be implemented by activities that contain this

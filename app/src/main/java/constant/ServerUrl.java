@@ -6,8 +6,8 @@ package constant;
 
 public class ServerUrl {
     //服务器IP地址
-//    public static String IP = "192.168.1.103";
-    public static String IP = "192.168.1.104";
+    public static String IP = "192.168.1.103";
+//    public static String IP = "192.168.1.104";
     public static String SERVER_PATH = "http://" + IP + ":8080";
 
     //获取用户名和密码
@@ -60,4 +60,10 @@ public class ServerUrl {
 
     //获取所有记录
     public static String GET_ALL_NOTES=SERVER_PATH+"/notesController/getAllNotes.action?userId=";
+
+    //添加记录
+    public static String PUT_NOTES=SERVER_PATH+"/notesController/addNotes.action";
+
+    //删除记录
+    public static String PUT_DELETE_NOTES=SERVER_PATH+"/notesController/deleteNotes.action";
 }
